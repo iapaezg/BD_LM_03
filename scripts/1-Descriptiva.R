@@ -1,17 +1,12 @@
 rm(list=ls())
 if(!require(pacman)) install.packages("pacman")
-library(psych)
-install.packages("modelsummary")
-library(modelsummary)
-require(pacman)
-require(stargazer)
-library(psych)
-install.packages("modelsummary")
-library(modelsummary)
 p_load(rio, # import/export data
        tidyverse, # tidy-data
        skimr, # summary data
-       caret) # Classification And REgression Training
+       caret, # Classification And REgression Training
+       psych,
+       modelsummary,
+       stargazer)
 
 #Se cargan los datos disponibles en dropbox (dl=0 a dl=1)
 tr_p <- read_csv("https://www.dropbox.com/scl/fi/vwfhvj05zbjh88ym0ywrf/train_personas.csv?dl=1&rlkey=zl6jxjvbzji2aqeaxsuqhrc2i")
