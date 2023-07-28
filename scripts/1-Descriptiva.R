@@ -66,3 +66,5 @@ glimpse(tr_h_df)
 stargazer(tr_h_df,type="text",out="stat.txt")
 stargazer(tr_p_df,type="text",out="stat.txt")
 datasummary_skim(tr_p_df)
+
+#HASTA AQUI
