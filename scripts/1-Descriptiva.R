@@ -25,6 +25,64 @@ glimpse(tr_p)
 glimpse(ts_p)
 skim(ts_p)
 
+tr_p <- tr_p %>% mutate(sample = "train")
+tr_h <- tr_h  %>% mutate(sample = "train")
+ts_p <- ts_p  %>% mutate(sample = "test")
+ts_h <- ts_h  %>% mutate(sample = "test")
+
+
+#Renombrar las variables
+
+tr_p_d <- tr_p %>% 
+	rename(Sexo= P6020) %>% 
+	rename(Edad= P6040) %>% 
+	rename(Afiliado_salud= P6090) %>% 
+ 	rename(Nivel_edu= P6210) %>%
+	rename(Anos_edu= P6210sl) %>%
+	rename(Rel_lab= P6430) %>%
+	rename(H_extra= P6510) %>% 
+	rename(Prima= P6545) %>% 
+	rename(Bonos= P6580) %>% 
+	rename(S_alim= P6581s1) %>% 
+	rename(S_trans= P6581s2) %>% 
+	rename(S_fam= P6581s3) %>% 
+	rename(S_edu= P6581s4) %>% 
+	rename(Aliment= P6590) %>% 
+	rename(Vivienda= P6600) %>% 
+	rename(S_edu= P6581s4) %>% 
+	rename(Otros_esp= P6620) %>% 
+	rename(Primas_ss= P6630s1) %>% 
+	rename(Navidad = P6630s2) %>% 
+	rename(Vacas = P6630s3) %>% 
+	rename(Viaticos = P6630s4) %>% 
+	rename(Bon_anual = P6630s6) %>% 
+	rename(H_trabajo = P6800) %>%
+	rename(C_pension = P69200) %>%
+	rename(OH_trabajo = P7045) %>%
+	rename(Arriendo= P7495)%>% 
+	rename(Pension_inv= P7500s2)%>% 
+	rename(Pension_pat= P7500s3)%>% 
+	rename(Ing_ayuda_hogares= P7505)%>%
+	rename(ayuda_hog_na= P7510s1)%>%
+ 	rename(ayuda_hog_int= P7510s2)%>%
+	rename(ayuda_inst= P7510s3)%>% 
+	rename(int_inv= P7510s5)%>% 
+	rename(int_cesantias= P7510s6)%>% 
+	rename(otras_fuentes= P7510s7)
+
+ls(tr_p_d)
+
+tr_h <- tr_h %>% 
+	rename(Cuartos= P5000) %>% 
+	rename(Dormitorio= P5010) %>% 
+	rename(Tipo_vivienda= P5090) %>% 
+	rename(Arriendos= P5140) %>% 
+	rename(Nper_h= Nper) %>% 
+	rename(Nper_unid_gasto= Npersug) %>% 
+ 	rename(linea_indig= Li) %>% 
+	rename(linea_pobre= Lp)
+
+
 P6020 SEXO
 P6040 EDAD EDAD2
 P6090 AFILIACIÓN SALUD (AFILIADO SI O NO) MISSIN DATA O 9=0
@@ -66,8 +124,6 @@ DESOCUPDOS
 7422 INGRESOS TRABJO RECIBIO
 7472 INGRESOS TRABAJO
 
-
-
 7495 RECIBIO PAGO ARREIENDO PENSION
 7500S2 PENSION INVALIDEZ
 7500S3 PENSION PATERNIDAD DIVORCIO
@@ -96,29 +152,6 @@ Li Línea indigencia
 Lp Línea de pobreza ingresos de un hogar
 
 
-#Renombrar las variables
-
-tr_h <- tr_h %>% 
-	rename(Tipo_vivienda= P5090) %>% 
-	rename(Nper_h= Nper) %>% 
-	rename(Nper_unid_gasto= Npersug) %>% 
- 	rename(Ing_unid_gasto= Ingtotugarr) %>% 
-	rename(Ing_percap_h= Ingpcug) %>% 
-	rename(linea_indig= Li) %>% 
-	rename(linea_pobre= Lp)
-
-tr_p <- tr_p %>% 
-	rename(Estrato= Estrato1) %>% 
-	rename(Sexo= P6020) %>% 
-	rename(Edad= P6040) %>% 
- 	rename(Reg_seg_social= P6100) %>% 
-	rename(PET= Pet) %>% 
-	rename(Ocupado= Oc) %>% 
-	rename(Desocupado= Des) %>% 
-	rename(Inactivo= Ina) %>% 
-	rename(Ing_ayuda_hogares= Iof3h)%>% 
-	rename(Ing_ayuda_inst= Iof3i)%>% 
-	rename(Ing_total= Ingtot )
 
 table(tr_p$Reg_seg_social)
 
@@ -127,6 +160,11 @@ cols1 <- c("Estrato","Sexo","Reg_seg_social","PET","Ocupado",
 tr_p[cols1] <- lapply(tr_p[cols1],factor)
 cols2 <- c("Tipo_vivienda","linea_indig", "linea_pobre")
 tr_h[cols2] <- lapply(tr_h[cols2],factor)
+
+
+tr_p_df <- tr_p %>% 
+  select(ID, Orden, Clase, Dominio,P6020,P6040, P6090, P6210, P6210s1,P6430,
+
 
 tr_p_df <- tr_p %>% 
   select(Estrato,Sexo,Edad,Reg_seg_social,PET,Ocupado,Desocupado,Inactivo,Ing_ayuda_hogares,Ing_ayuda_inst,Ing_total)
