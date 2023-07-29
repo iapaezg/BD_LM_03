@@ -191,27 +191,27 @@ f_des <- c("reg_salud","nivel_edu","q_hizo","rel_lab","a_pension")
 bd_p[f_des] <- lapply(bd_p[f_des],factor)
 
 ggplot(bd_p,aes(colour=sample,x=reg_salud)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Régimen de salud",y="Personas")+
   facet_wrap(~sample)
 
 ggplot(bd_p,aes(colour=sample,x=nivel_edu)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey",stat="density") + 
   labs(x="Nivel educativo",y="Personas")+
   facet_wrap(~sample)
 
 ggplot(bd_p,aes(colour=sample,x=rel_lab)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey",stat="density") + 
   labs(x="Relación laboral",y="Personas")+
   facet_wrap(~sample)
 
 ggplot(bd_p,aes(colour=sample,x=q_hizo)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="¿Qué hizo la semana anterior?",y="Personas")+
   facet_wrap(~sample)
 
 ggplot(bd_p,aes(colour=sample,x=a_pension)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Tipo afiliación a pensión",y="Personas")+
   facet_wrap(~sample)
 
@@ -277,18 +277,18 @@ glimpse(bd_h)
 datasummary_skim(bd_h)
 
 ggplot(bd_h,aes(colour=sample,x=Dominio)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey",stat="density") + 
   labs(x="Ciudades (train/test)",y="Cantidad")+
   facet_wrap(~sample)+ 
   scale_x_discrete(guide = guide_axis(angle = 90))
 
 ggplot(bd_h,aes(colour=sample,x=cuartos)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Número de cuartos (train/test)",y="Cantidad")+
   facet_wrap(~sample)
 
 ggplot(bd_h,aes(colour=sample,x=dormitorio)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Número de dormitorios (train/test)",y="Cantidad")+
   facet_wrap(~sample)
 
@@ -296,7 +296,7 @@ ggplot(bd_h,aes(colour=sample,x=dormitorio)) +
 # 3. En arriendo o subarriendo. 4. En usufructo. 5. En posesión sin titulo. 6. Otra
 
 ggplot(bd_h,aes(colour=sample,x=tipo_vivienda)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Tipo de vivienda (train/test)",y="Cantidad")+
   facet_wrap(~sample)
 table(bd_h$tipo_vivienda)
@@ -308,7 +308,7 @@ ggplot(bd_h,aes(colour=sample,x=Nper)) +
 table(bd_h$Nper)
 
 ggplot(bd_h,aes(colour=sample,x=Npersug)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Número personas por unidad de gasto (train/test)",y="Cantidad")+
   facet_wrap(~sample)
 
