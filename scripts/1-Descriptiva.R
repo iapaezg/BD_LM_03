@@ -171,7 +171,11 @@ bd_p <- bd_p %>%
   mutate(edad2=edad^2)
   
 
-tr_h <- tr_h %>% 
+
+
+### BASE DE DATOS HOGARES ###
+
+tr_hm <- tr_h %>% 
 	rename(Cuartos= P5000) %>% 
 	rename(Dormitorio= P5010) %>% 
 	rename(Tipo_vivienda= P5090) %>% 
@@ -180,6 +184,45 @@ tr_h <- tr_h %>%
 	rename(Nper_unid_gasto= Npersug) %>% 
  	rename(linea_indig= Li) %>% 
 	rename(linea_pobre= Lp)
+
+ts_hm <- ts_h %>% 
+	rename(Cuartos= P5000) %>% 
+	rename(Dormitorio= P5010) %>% 
+	rename(Tipo_vivienda= P5090) %>% 
+	rename(Arriendos= P5140) %>% 
+	rename(Nper_h= Nper) %>% 
+	rename(Nper_unid_gasto= Npersug) %>% 
+ 	rename(linea_indig= Li) %>% 
+	rename(linea_pobre= Lp)
+
+str(ts_hm)
+
+tr_hm <- tr_hm %>%
+  select(id, Clase, Dominio,Cuartos,Dormitorio, Tipo_vivienda, Nper_h,Nper_unid_gasto, linea_indig,linea_pobre)
+
+ts_hm <- ts_hm %>%
+  select(id, Clase, Dominio,Cuartos,Dormitorio, Tipo_vivienda,Nper_h,Nper_unid_gasto, linea_indig,linea_pobre)
+
+bd_h <- rbind(tr_hm,ts_hm)
+
+# Tratamiento missing data
+
+table(bd_h$Cuartos)
+table(bd_h$Dormitorio)
+table(bd_h$Tipo_vivienda)
+table(bd_h$Nper_h)
+table(bd_h$Nper_unid_gasto)
+table(bd_h$linea_pobre) 
+
+skim(bd_h)
+bd_h <- bd_h %>% 
+  mutate(Cuartos=ifelse(is.na(Cuartos)|Cuartos==98,3,Cuartos)) %>% # Moda=3 
+  mutate(Cuartos=ifelse(is.na(Cuartos)|Cuartos==43,3,Cuartos)) %>% # Moda=3
+
+
+
+
+
 
 
 P6020 SEXO
