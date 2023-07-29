@@ -7,7 +7,8 @@ p_load(rio, # import/export data
        psych,
        modelsummary,
        stargazer,
-       foreach)
+       foreach,
+	 ggplot2)
 
 # Se cargan los datos disponibles en dropbox (dl=0 a dl=1) ----
 tr_p <- read_csv("https://www.dropbox.com/scl/fi/vwfhvj05zbjh88ym0ywrf/train_personas.csv?dl=1&rlkey=zl6jxjvbzji2aqeaxsuqhrc2i")
@@ -216,8 +217,6 @@ skim(bd_h)
 
 table(bd_h$cuartos)
 table(bd_h$dormitorio)
-table(bd_h$tipo_vivienda)
-table(bd_h$Nper)
 table(bd_h$Npersug)
 table(bd_h$Clase)
 
@@ -244,12 +243,59 @@ stargazer(bd_h,type="text",out="stat.txt")
 datasummary_skim(bd_p)
 datasummary_skim(bd_h)
 
+##Estadisticas descriptivas de los hogares
+
+ggplot(bd_h,aes(colour=sample,x=Dominio)) +
+  geom_bar(fill="grey") + 
+  labs(x="Ciudades (train/test)",y="Cantidad")+
+  facet_wrap(~sample)+ 
+  scale_x_discrete(guide = guide_axis(angle = 90))
+
+ggplot(bd_h,aes(colour=sample,x=cuartos)) +
+  geom_bar(fill="grey") + 
+  labs(x="Número de cuartos (train/test)",y="Cantidad")+
+  facet_wrap(~sample)
+
+ggplot(bd_h,aes(colour=sample,x=dormitorio)) +
+  geom_bar(fill="grey") + 
+  labs(x="Número de dormitorios (train/test)",y="Cantidad")+
+  facet_wrap(~sample)
+
+## TIPO DE VIVIENDA. 1. Propia, totalmente pagada. 2. Propia, la están pagando
+3. En arriendo o subarriendo. 4. En usufructo. 5. En posesión sin titulo. 6. Otra
+
+ggplot(bd_h,aes(colour=sample,x=tipo_vivienda)) +
+  geom_bar(fill="grey") + 
+  labs(x="Tipo de vivienda (train/test)",y="Cantidad")+
+  facet_wrap(~sample)
+table(bd_h$tipo_vivienda)
+
+ggplot(bd_h,aes(colour=sample,x=Nper)) +
+  geom_bar(fill="grey") + 
+  labs(x="Número personas por hogar (train/test)",y="Cantidad")+
+  facet_wrap(~sample)
+table(bd_h$Nper)
+
+ggplot(bd_h,aes(colour=sample,x=Npersug)) +
+  geom_bar(fill="grey") + 
+  labs(x="Número personas por unidad de gasto (train/test)",y="Cantidad")+
+  facet_wrap(~sample)
+
+#Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre
+stargazer(tr_h$Pobre,type="text",out="stat.txt")
+
+histogram(tr_h$Pobre,xlab="Hogar pobre",ylab="Cantidad",col="grey")
+
+
+ggplot(tr_h,aes(colour=sample,x=Pobre)) +
+  geom_bar(fill="grey") + 
+  labs(x="Hogar pobre (train/test)",y="Cantidad")+
+  facet_wrap(~sample)
+table(tr_h$Pobre)
 
 
 
-
-
-
+Li, Lp, sample)
 
 
 
