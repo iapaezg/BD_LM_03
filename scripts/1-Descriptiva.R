@@ -141,40 +141,35 @@ bd_p <- bd_p %>%
   mutate(Oc=ifelse(is.na(Oc),0,Oc)) %>% 
   mutate(Des=ifelse(is.na(Des),0,Des)) %>% 
   mutate(Ina=ifelse(is.na(Ina),0,Ina)) %>% 
-  mutate()
-
-ifelse(is.na(i)|i==9|i==2,0,i)
-
-repl <- function(x,na.rm=FALSE) (ifelse=is.na(x)|x==9|x==2,0,x)
-bd_p <- bd_p %>% 
-  mutate_at(c(a_salud", "h_extra", "prima", "bonos", "s_alim", "s_trans", "s_fam", "s_edu",
-         "sal_alim", "sal_viv", "otros_esp", "prima_ss", "prima_nav", "prima_vac", "viaticos", "bon_anual",
-         "a_pension", "ing_des", "arriendo", "inv_pension", "pat_pension", "hog_na", "hog_int", "ayuda_inst",
-         "int_inv", "int_cesantias", "otras_fuentes"))
-
-
-var <- c("a_salud", "h_extra", "prima", "bonos", "s_alim", "s_trans", "s_fam", "s_edu",
-         "sal_alim", "sal_viv", "otros_esp", "prima_ss", "prima_nav", "prima_vac", "viaticos", "bon_anual",
-         "a_pension", "ing_des", "arriendo", "inv_pension", "pat_pension", "hog_na", "hog_int", "ayuda_inst",
-         "int_inv", "int_cesantias", "otras_fuentes")
-for (i in 1:length(var)) {
-  bd_p <- bd_p %>% 
-    mutate(var[i]=ifelse(is.na(var[i])|var[i]==9|var[i]==2,0,var[i]))
-}
-  mutate(i=ifelse(is.na(i)|i==9|i==2,0,i))
-}
-length(var)
-
-foreach(i=c("a_salud", "h_extra", "prima", "bonos", "s_alim", "s_trans", "s_fam", "s_edu"), # 2=0 No
-    sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
-    a_pension, ing_des, arriendo, inv_pension, pat_pension, hog_na, hog_int, ayuda_inst,
-    int_inv, int_cesantias, otras_fuentes)) {
-      bd_p <- bd_p %>%
-        mutate(i=ifelse(is.na(i)|i==9|i==2,0,i))
-    }
-
-bd_p <- bd_p %>% 
-  mutate(nivel_edu=ifelse(is.na(nivel_edu)|nivel_edu==9,3,nivel_edu))
+  mutate(a_salud=ifelse(is.na(a_salud)|a_salud==9|a_salud==2,0,a_salud)) %>% 
+  mutate(h_extra=ifelse(is.na(h_extra)|h_extra==9|h_extra==2,0,h_extra)) %>% 
+  mutate(prima=ifelse(is.na(prima)|prima==9|prima==2,0,prima)) %>% 
+  mutate(bonos=ifelse(is.na(bonos)|bonos==9|bonos==2,0,bonos)) %>% 
+  mutate(s_alim=ifelse(is.na(s_alim)|s_alim==9|s_alim==2,0,s_alim)) %>% 
+  mutate(s_trans=ifelse(is.na(s_trans)|s_trans==9|s_trans==2,0,s_trans)) %>% 
+  mutate(s_fam=ifelse(is.na(s_fam)|s_fam==9|s_fam==2,0,s_fam)) %>% 
+  mutate(s_edu=ifelse(is.na(s_edu)|s_edu==9|s_edu==2,0,s_edu)) %>% 
+  mutate(sal_alim=ifelse(is.na(sal_alim)|sal_alim==9|sal_alim==2,0,sal_alim)) %>% 
+  mutate(sal_viv=ifelse(is.na(sal_viv)|sal_viv==9|sal_viv==2,0,sal_viv)) %>% 
+  mutate(otros_esp=ifelse(is.na(otros_esp)|otros_esp==9|otros_esp==2,0,otros_esp)) %>% 
+  mutate(prima_ss=ifelse(is.na(prima_ss)|prima_ss==9|prima_ss==2,0,prima_ss)) %>% 
+  mutate(prima_nav=ifelse(is.na(prima_nav)|prima_nav==9|prima_nav==2,0,prima_nav)) %>% 
+  mutate(prima_vac=ifelse(is.na(prima_vac)|prima_vac==9|prima_vac==2,0,prima_vac)) %>% 
+  mutate(viaticos=ifelse(is.na(viaticos)|viaticos==9|viaticos==2,0,viaticos)) %>% 
+  mutate(bon_anual=ifelse(is.na(bon_anual)|bon_anual==9|bon_anual==2,0,bon_anual)) %>% 
+  mutate(a_pension=ifelse(is.na(a_pension)|a_pension==9|a_pension==2,0,a_pension)) %>% 
+  mutate(ing_des=ifelse(is.na(ing_des)|ing_des==9|ing_des==2,0,ing_des)) %>% 
+  mutate(arriendo=ifelse(is.na(arriendo)|arriendo==9|arriendo==2,0,arriendo)) %>% 
+  mutate(inv_pension=ifelse(is.na(inv_pension)|inv_pension==9|inv_pension==2,0,inv_pension)) %>% 
+  mutate(pat_pension=ifelse(is.na(pat_pension)|pat_pension==9|pat_pension==2,0,pat_pension)) %>% 
+  mutate(hog_na=ifelse(is.na(hog_na)|hog_na==9|hog_na==2,0,hog_na)) %>% 
+  mutate(hog_int=ifelse(is.na(hog_int)|hog_int==9|hog_int==2,0,hog_int)) %>% 
+  mutate(ayuda_inst=ifelse(is.na(ayuda_inst)|ayuda_inst==9|ayuda_inst==2,0,ayuda_inst)) %>% 
+  mutate(int_inv=ifelse(is.na(int_inv)|int_inv==9|int_inv==2,0,int_inv)) %>% 
+  mutate(int_cesantias=ifelse(is.na(int_cesantias)|int_cesantias==9|int_cesantias==2,0,int_cesantias)) %>% 
+  mutate(otras_fuentes=ifelse(is.na(otras_fuentes)|otras_fuentes==9|otras_fuentes==2,0,otras_fuentes)) %>% 
+  mutate(edad2=edad^2)
+  
 
 tr_h <- tr_h %>% 
 	rename(Cuartos= P5000) %>% 
