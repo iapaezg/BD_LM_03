@@ -210,14 +210,10 @@ ts_hm <- ts_hm %>%
 
 bd_h <- rbind(tr_hm,ts_hm) # Unen bases de hogares
 
-<<<<<<< Updated upstream
 skim(bd_h)
 
-## Tratamiento missing data ----
-=======
 # Tratamiento missing data
 
->>>>>>> Stashed changes
 table(bd_h$cuartos)
 table(bd_h$dormitorio)
 table(bd_h$tipo_vivienda)
@@ -230,10 +226,11 @@ bd_h <- bd_h %>%
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==98,3,cuartos)) %>% # Moda=3 
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==43,3,cuartos))%>%  # Moda=3
   mutate(Clase=ifelse(Clase==2,0,Clase)) #0 es rural 1 es urbano
+
+## Convertir variables categóricas en factores ----
   
 cols2 <- c("Clase","tipo_vivienda")
 bd_h[cols2] <- lapply(bd_h[cols2],factor)
-
 
 
 #ESTADISTICAS DESCRIPTIVAS
