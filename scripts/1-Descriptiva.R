@@ -270,8 +270,6 @@ skim(bd_p)
 skim(bd_h)
 glimpse(bd_p)
 glimpse(bd_h)
-stargazer(bd_p,type="text",out="stat.txt")
-stargazer(bd_h,type="text",out="stat.txt")
 datasummary_skim(bd_p)
 datasummary_skim(bd_h)
 
@@ -312,18 +310,11 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
   facet_wrap(~sample)
 
 ## Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre ----
-stargazer(tr_h$Pobre,type="text", out="stat.txt")
-histogram(tr_h$Pobre,xlab="Hogar pobre",ylab="Cantidad",col="grey")
 
-ggplot(tr_h,aes(colour=sample,x=Pobre)) +
-  geom_bar(fill="grey") + 
-  labs(x="Hogar pobre (train/test)",y="Cantidad")+
-  facet_wrap(~sample)
 table(tr_h$Pobre)
 
 
 
-Li, Lp, sample)
 
 
 
@@ -386,9 +377,6 @@ REEMPLAZAR POR 2=NO
 
 INA
 
-
-
-
 P5000 Cuartos en el hogar
 P5010 Dormitorios
 P5090 Tipo de vivienda
@@ -397,8 +385,3 @@ Nper Personas por hogar
 Npersug Personas por unidad de gasto
 Li Línea indigencia
 Lp Línea de pobreza ingresos de un hogar
-
-
-
-
-#HASTA AQUI
