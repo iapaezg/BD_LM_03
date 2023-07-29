@@ -210,19 +210,48 @@ ts_hm <- ts_hm %>%
 
 bd_h <- rbind(tr_hm,ts_hm) # Unen bases de hogares
 
+<<<<<<< Updated upstream
 skim(bd_h)
 
 ## Tratamiento missing data ----
+=======
+# Tratamiento missing data
+
+>>>>>>> Stashed changes
 table(bd_h$cuartos)
 table(bd_h$dormitorio)
 table(bd_h$tipo_vivienda)
 table(bd_h$Nper)
 table(bd_h$Npersug)
+table(bd_h$Clase)
 
-skim(bd_h)
+glimpse(bd_h)
 bd_h <- bd_h %>% 
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==98,3,cuartos)) %>% # Moda=3 
-  mutate(cuartos=ifelse(is.na(cuartos)|cuartos==43,3,cuartos))  # Moda=3
+  mutate(cuartos=ifelse(is.na(cuartos)|cuartos==43,3,cuartos))%>%  # Moda=3
+  mutate(Clase=ifelse(Clase==2,0,Clase)) #0 es rural 1 es urbano
+  
+cols2 <- c("Clase","tipo_vivienda")
+bd_h[cols2] <- lapply(bd_h[cols2],factor)
+
+
+
+#ESTADISTICAS DESCRIPTIVAS
+
+skim(bd_p)
+skim(bd_h)
+glimpse(bd_p)
+glimpse(bd_h)
+stargazer(bd_p,type="text",out="stat.txt")
+stargazer(bd_h,type="text",out="stat.txt")
+datasummary_skim(bd_p)
+datasummary_skim(bd_h)
+
+
+
+
+
+
 
 
 
@@ -300,31 +329,5 @@ Lp Línea de pobreza ingresos de un hogar
 
 
 
-table(tr_p$Reg_seg_social)
-
-cols1 <- c("Estrato","Sexo","Reg_seg_social","PET","Ocupado",
-          "Desocupado","Inactivo")
-tr_p[cols1] <- lapply(tr_p[cols1],factor)
-cols2 <- c("Tipo_vivienda","linea_indig", "linea_pobre")
-tr_h[cols2] <- lapply(tr_h[cols2],factor)
-
-
-tr_p_df <- tr_p %>% 
-  select(ID, Orden, Clase, Dominio,P6020,P6040, P6090, P6210, P6210s1,P6430,
-
-
-tr_p_df <- tr_p %>% 
-  select(Estrato,Sexo,Edad,Reg_seg_social,PET,Ocupado,Desocupado,Inactivo,Ing_ayuda_hogares,Ing_ayuda_inst,Ing_total)
-
-tr_h_df <- tr_h %>% 
-  select(Tipo_vivienda, Nper_h,Nper_unid_gasto,Ing_unid_gasto,Ing_percap_h,linea_indig,linea_pobre)
-
-skim(tr_p_df)
-skim(tr_h_df)
-glimpse(tr_p_df)
-glimpse(tr_h_df)
-stargazer(tr_h_df,type="text",out="stat.txt")
-stargazer(tr_p_df,type="text",out="stat.txt")
-datasummary_skim(tr_p_df)
 
 #HASTA AQUI
