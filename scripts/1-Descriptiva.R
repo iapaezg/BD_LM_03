@@ -232,7 +232,9 @@ tr_hm <- tr_h %>%
 ts_hm <- ts_h %>% 
   rename(cuartos= P5000) %>% 
   rename(dormitorio= P5010) %>% 
-  rename(tipo_vivienda= P5090)
+  rename(tipo_vivienda= P5090) 
+  
+ts_hm <- ts_hm %>% mutate(Pobre = (""))
 
 str(ts_hm)
 
@@ -242,7 +244,7 @@ tr_hm <- tr_hm %>%
          Nper, Npersug, Li, Lp, Pobre, sample)
 ts_hm <- ts_hm %>%
   select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
-         Nper, Npersug, Li, Lp, sample)
+         Nper, Npersug, Li, Lp,Pobre, sample)
 
 bd_h <- rbind(tr_hm,ts_hm) # Unen bases de hogares
 
@@ -259,7 +261,8 @@ glimpse(bd_h)
 bd_h <- bd_h %>% 
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==98,3,cuartos)) %>% # Moda=3 
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==43,3,cuartos))%>%  # Moda=3
-  mutate(Clase=ifelse(Clase==2,0,Clase)) #0 es rural 1 es urbano
+  mutate(Clase=ifelse(Clase==2,0,Clase))%>% #0 es rural 1 es urbano
+  mutate(Pobre =())
 
 ## Convertir variables categóricas en factores ----
   
