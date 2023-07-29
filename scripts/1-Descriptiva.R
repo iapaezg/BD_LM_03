@@ -261,8 +261,7 @@ glimpse(bd_h)
 bd_h <- bd_h %>% 
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==98,3,cuartos)) %>% # Moda=3 
   mutate(cuartos=ifelse(is.na(cuartos)|cuartos==43,3,cuartos))%>%  # Moda=3
-  mutate(Clase=ifelse(Clase==2,0,Clase))%>% #0 es rural 1 es urbano
-  mutate(Pobre =())
+  mutate(Clase=ifelse(Clase==2,0,Clase)) #0 es rural 1 es urbano
 
 ## Convertir variables categóricas en factores ----
   
@@ -320,13 +319,239 @@ set.seed(2023)
 p_load(caret)
 
 # se definen tres grupos de muestras
-db_trainh <- 
-split1 <- 
+bd_h <- bd_h %>% 
+  mutate(p_cuarto=Nper/cuartos)
+db_trainh <- filter(bd_h,sample=="train")
+db_testh <- filter(bd_h,sample=="test")
+db_trainh$Pobre <- factor(db_trainh$Pobre,levels = c(0,1),
+                          labels=c("no","si"))
+levels(db_trainh$Pobre)
+split1 <-createDataPartition(db_trainh$Pobre,p=0.7)[[1]]
+length(split1)
+training <- db_trainh[split1,]
+other <- db_trainh[-split1,]
+split2 <- createDataPartition(other$Pobre,p=1/3)[[1]]
+evaluation <- other[split2,]
+testing <- other[-split2,]
+dim(training)
+dim(testing)
+dim(evaluation)
+
+# Validar particiones
+prop.table(table(db_trainh$Pobre))
+prop.table(table(training$Pobre))
+prop.table(table(testing$Pobre))
+prop.table(table(evaluation$Pobre))
+
+predict <- stats::predict
+
+M1 <- as.formula("Pobre ~ Dominio + cuartos + Nper + tipo_vivienda")
+M2 <- as.formula("Pobre ~ Dominio + p_cuarto + tipo_vivienda")
+
+ffcv<-function(...)c(twoClassSummary(...), defaultSummary(...))
+Control <- trainControl(method = "cv",
+                        number = 5,
+                        summaryFunction = ffcv,
+                        classProbs = TRUE,
+                        verbose=FALSE,
+                        savePredictions = T)
+
+# Modelo 1 - Logit
+logitM1 <- train(
+  M1,
+  data = training,
+  method = "glm",
+  trControl = Control,
+  family = "binomial",
+  preProcess = c("center", "scale")
+)
+
+logitM1
+
+# Modelo 2 - Logit
+logitM2 <- train(
+  M2,
+  data = training,
+  method = "glm",
+  trControl = Control,
+  family = "binomial",
+  preProcess = c("center", "scale")
+)
+
+logitM2
+
+# Lasso M1
+grid <- 10^seq(-4, 0.01, length = 200)
+lasso1 <- train(
+  M1,
+  data = training,
+  method = "glmnet",
+  trControl = Control,
+  family = "binomial",
+  metric = "Sens",
+  tuneGrid = expand.grid(alpha = 0,lambda=grid),
+  preProcess = c("center", "scale")
+)
+lasso1
+
+# Lasso M2
+grid <- 10^seq(-4, 0.01, length = 200)
+lasso2 <- train(
+  M2,
+  data = training,
+  method = "glmnet",
+  trControl = Control,
+  family = "binomial",
+  metric = "Sens",
+  tuneGrid = expand.grid(alpha = 0,lambda=grid),
+  preProcess = c("center", "scale")
+)
+lasso2
+
+# Lasso-ROC M1
+lasso_roc1 <- train(
+  M1, 
+  data = training, 
+  method = "glmnet",
+  trControl = Control,
+  family = "binomial", 
+  metric = "ROC",
+  tuneGrid = expand.grid(alpha = 0,lambda=grid), 
+  preProcess = c("center", "scale")
+)
+lasso_roc1
+
+# Lasso-ROC M2
+lasso_roc2 <- train(
+  M2, 
+  data = training, 
+  method = "glmnet",
+  trControl = Control,
+  family = "binomial", 
+  metric = "ROC",
+  tuneGrid = expand.grid(alpha = 0,lambda=grid), 
+  preProcess = c("center", "scale")
+)
+lasso_roc2
+
+# Puntos de corte para ROC
+p_load(pROC)
+resultados <- data.frame(Pobre=evaluation$Pobre)
+
+# Para M1
+resultados$R1 <- predict(lasso_roc1,
+                         newdata=evaluation,
+                         type="prob")[,1]
+head(resultados)
+# Roc para M1
+rf_ROC1 <- roc(resultados$Pobre, resultados$R1, levels = rev(levels(resultados$Pobre)))
+rf_ROC1
+
+#Se calcula punto de corte
+rf_Thresh1 <- coords(rf_ROC1, x = "best", best.method = "closest.topleft")
+rf_Thresh1
+
+#Se evalúan resultados
+resultados<-resultados %>% mutate(lasso1hat05=ifelse(resultados$R1>0.5,"Si","No"),
+                                    lasso1rf_Thresh=ifelse(resultados$R1>rf_Thresh1$threshold,"Si","No"))
+
+# Caso en el que el threshold es = 0.5 (Bayes)
+with(resultados,table(Pobre,lasso1hat05))
+
+# Caso en el que el threshold se obtiene del ROC
+with(resultados,table(Pobre,lasso1rf_Thresh))
+
+# Para M2
+resultados$R2 <- predict(lasso_roc2,
+                         newdata=evaluation,
+                         type="prob")[,1]
+head(resultados)
+
+# Roc para M2
+rf_ROC2 <- roc(resultados$Pobre, resultados$R2, levels = rev(levels(resultados$Pobre)))
+rf_ROC2
+
+#Se calcula punto de corte
+rf_Thresh2 <- coords(rf_ROC2, x = "best", best.method = "closest.topleft")
+rf_Thresh2
+
+#Se evalúan resultados
+resultados<-resultados %>% mutate(lasso2hat05=ifelse(resultados$R2>0.5,"Si","No"),
+                                  lasso2rf_Thresh=ifelse(resultados$R2>rf_Thresh2$threshold,"Si","No"))
+
+# Caso en el que el threshold es = 0.5 (Bayes)
+with(resultados,table(Pobre,lasso2hat05))
+
+# Caso en el que el threshold se obtiene del ROC
+with(resultados,table(Pobre,lasso2rf_Thresh))
+
+# Descriptiva de resultados M1 y M2, metodología (dentro del train)
+testR <- data.frame(Pobre=testing$Pobre)
+testR
+
+testR$logitM1 <- predict(logitM1,
+                         newdata = testing,
+                         type= "prob")[,1]
+testR$lasso1 <- predict(lasso1,
+                         newdata = testing,
+                         type= "prob")[,1]
+testR$lasso_roc1 <- predict(lasso_roc1,
+                         newdata = testing,
+                         type= "prob")[,1]
+
+testR <- testR %>% 
+  mutate(
+    logitM1=ifelse(logitM1>0.5,"si","no"),
+    lasso1=ifelse(lasso1>0.5,"si","no"),
+    lasso_roc1=ifelse(lasso_roc1>rf_Thresh1$threshold,"si","no")
+  )
+
+with(testR,table(Pobre,logitM1))
+with(testR,table(Pobre,lasso1))
+with(testR,table(Pobre,lasso_roc1))
 
 
+testR$logitM2 <- predict(logitM2,
+                         newdata = testing,
+                         type= "prob")[,1]
+testR$lasso2 <- predict(lasso2,
+                        newdata = testing,
+                        type= "prob")[,1]
+testR$lasso_roc2 <- predict(lasso_roc2,
+                            newdata = testing,
+                            type= "prob")[,1]
+
+testR <- testR %>% 
+  mutate(
+    logitM2=ifelse(logitM2>0.5,"si","no"),
+    lasso2=ifelse(lasso2>0.5,"si","no"),
+    lasso_roc2=ifelse(lasso_roc2>rf_Thresh2$threshold,"si","no")
+  )
+
+logitM1
+logitM2
+lasso1
+lasso2
+lasso_roc1
+lasso_roc2
+
+# Evaluando en el test real
+data <- db_testh
 
 
+# Exportar resultados
+d_submit <- db_testh
+d_submit$predict <- predict(logitM1,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i1.csv",row.names = FALSE)
+  
 
+with(testR,table(Pobre,logitM1))
+with(testR,table(Pobre,lasso1))
+with(testR,table(Pobre,lasso_roc1))
 
 
 P6020 SEXO
