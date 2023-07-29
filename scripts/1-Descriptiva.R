@@ -485,6 +485,37 @@ with(resultados,table(Pobre,lasso2hat05))
 # Caso en el que el threshold se obtiene del ROC
 with(resultados,table(Pobre,lasso2rf_Thresh))
 
+
+# Elastic Net
+
+#M1
+
+elasticnet1 <- train(
+  M1,
+  data = training,
+  method = "glmnet",
+  trControl = Control,
+  family = "binomial",
+  metric = "Acc",
+  preProcess = c("center", "scale")
+)
+
+elasticnet1
+
+# M2
+
+elasticnet2<- train(
+  M2,
+  data = training,
+  method = "glmnet",
+  trControl = Control,
+  family = "binomial",
+  metric = "Sens",
+  preProcess = c("center", "scale")
+)
+
+elasticnet2
+
 # Descriptiva de resultados M1 y M2, metodología (dentro del train)
 testR <- data.frame(Pobre=testing$Pobre)
 testR
@@ -499,16 +530,23 @@ testR$lasso_roc1 <- predict(lasso_roc1,
                          newdata = testing,
                          type= "prob")[,1]
 
+testR$elasticnet1 <- predict(elasticnet1,
+                                   newdata = testing,
+                                   type = "prob")[,1]
+
 testR <- testR %>% 
   mutate(
     logitM1=ifelse(logitM1>0.5,"si","no"),
     lasso1=ifelse(lasso1>0.5,"si","no"),
     lasso_roc1=ifelse(lasso_roc1>rf_Thresh1$threshold,"si","no")
+    elasticnet1=ifelse(elasticnet1>0.5,"Si","No")
   )
+
 
 with(testR,table(Pobre,logitM1))
 with(testR,table(Pobre,lasso1))
 with(testR,table(Pobre,lasso_roc1))
+with(testR,table(Pobre,elasticnet1))
 
 
 testR$logitM2 <- predict(logitM2,
@@ -521,12 +559,21 @@ testR$lasso_roc2 <- predict(lasso_roc2,
                             newdata = testing,
                             type= "prob")[,1]
 
+testR$elasticnet2 <- predict(elasticnet2,
+                                   newdata = testing,
+                                   type = "prob")[,1]
 testR <- testR %>% 
   mutate(
     logitM2=ifelse(logitM2>0.5,"si","no"),
     lasso2=ifelse(lasso2>0.5,"si","no"),
     lasso_roc2=ifelse(lasso_roc2>rf_Thresh2$threshold,"si","no")
+    elasticnet2=ifelse(elasticnet2>0.5,"Si","No")
   )
+
+with(testR,table(Pobre,logitM2))
+with(testR,table(Pobre,lasso2))
+with(testR,table(Pobre,lasso_roc2))
+with(testR,table(Pobre,elasticnet2))
 
 logitM1
 logitM2
@@ -534,6 +581,8 @@ lasso1
 lasso2
 lasso_roc1
 lasso_roc2
+elasticnet1
+elasticnet2
 
 # Evaluando en el test real
 data <- db_testh
@@ -549,9 +598,8 @@ prop.table(table(submit$Pobre))
 write.csv(submit,file = "../stores/i1.csv",row.names = FALSE)
   
 
-with(testR,table(Pobre,logitM1))
-with(testR,table(Pobre,lasso1))
-with(testR,table(Pobre,lasso_roc1))
+
+
 
 
 P6020 SEXO
