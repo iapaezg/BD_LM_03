@@ -9,7 +9,7 @@ p_load(rio, # import/export data
        stargazer,
        foreach)
 
-#Se cargan los datos disponibles en dropbox (dl=0 a dl=1)
+# Se cargan los datos disponibles en dropbox (dl=0 a dl=1) ----
 tr_p <- read_csv("https://www.dropbox.com/scl/fi/vwfhvj05zbjh88ym0ywrf/train_personas.csv?dl=1&rlkey=zl6jxjvbzji2aqeaxsuqhrc2i")
 tr_h <- read_csv("https://www.dropbox.com/scl/fi/mujk9xw7rerfg8efq22b5/train_hogares.csv?rlkey=2lp8la11mvsfz3jufn9fe21jk&dl=1")
 ts_p <- read_csv("https://www.dropbox.com/scl/fi/wm9e5hbg3pmgygax85pot/test_personas.csv?rlkey=l7iyjjvm9xqddme9fc79dbahp&dl=1")
@@ -112,14 +112,14 @@ trp_m <- trp_m %>%
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
          sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
          h_tra1, a_pension, h_tra2, ing_des, arriendo, inv_pension, pat_pension, hog_na,
-         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina)
+         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample)
   
 tsp_m <- tsp_m %>%
   select(id, Orden, Clase, Dominio, sexo, edad, a_salud, reg_salud, nivel_edu, anos_edu,
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
          sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
          h_tra1, a_pension, h_tra2, ing_des, arriendo, inv_pension, pat_pension, hog_na,
-         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina)
+         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample)
 
 bd_p <- rbind(trp_m,tsp_m)
 table(bd_p$reg_salud)
@@ -127,6 +127,7 @@ table(bd_p$nivel_edu)
 median(bd_p$anos_edu[which(!is.na(bd_p$anos_edu))])
 table(bd_p$q_hizo)
 table(bd_p$rel_lab,bd_p$Oc)
+
 # Tratamiento missing data
 skim(bd_p)
 bd_p <- bd_p %>% 
@@ -168,40 +169,32 @@ bd_p <- bd_p %>%
   mutate(int_inv=ifelse(is.na(int_inv)|int_inv==9|int_inv==2,0,int_inv)) %>% 
   mutate(int_cesantias=ifelse(is.na(int_cesantias)|int_cesantias==9|int_cesantias==2,0,int_cesantias)) %>% 
   mutate(otras_fuentes=ifelse(is.na(otras_fuentes)|otras_fuentes==9|otras_fuentes==2,0,otras_fuentes)) %>% 
-  mutate(edad2=edad^2)
+  mutate(edad2=edad^2) %>% 
+  mutate(exp=edad-anos_edu-5) %>% 
+  mutate(exp=exp^2)
   
 skim(bd_p)
-
 
 ### BASE DE DATOS HOGARES ###
 
 tr_hm <- tr_h %>% 
-	rename(Cuartos= P5000) %>% 
-	rename(Dormitorio= P5010) %>% 
-	rename(Tipo_vivienda= P5090) %>% 
-	rename(Arriendos= P5140) %>% 
-	rename(Nper_h= Nper) %>% 
-	rename(Nper_unid_gasto= Npersug) %>% 
- 	rename(linea_indig= Li) %>% 
-	rename(linea_pobre= Lp)
+	rename(cuartos= P5000) %>% 
+	rename(dormitorio= P5010) %>% 
+	rename(tipo_vivienda= P5090)
 
 ts_hm <- ts_h %>% 
-	rename(Cuartos= P5000) %>% 
-	rename(Dormitorio= P5010) %>% 
-	rename(Tipo_vivienda= P5090) %>% 
-	rename(Arriendos= P5140) %>% 
-	rename(Nper_h= Nper) %>% 
-	rename(Nper_unid_gasto= Npersug) %>% 
- 	rename(linea_indig= Li) %>% 
-	rename(linea_pobre= Lp)
+  rename(cuartos= P5000) %>% 
+  rename(dormitorio= P5010) %>% 
+  rename(tipo_vivienda= P5090)
 
 str(ts_hm)
 
 tr_hm <- tr_hm %>%
-  select(id, Clase, Dominio,Cuartos,Dormitorio, Tipo_vivienda, Nper_h,Nper_unid_gasto, linea_indig,linea_pobre)
-
+  select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
+         Nper, Npersug, Li, Lp, sample)
 ts_hm <- ts_hm %>%
-  select(id, Clase, Dominio,Cuartos,Dormitorio, Tipo_vivienda,Nper_h,Nper_unid_gasto, linea_indig,linea_pobre)
+  select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
+         Nper, Npersug, Li, Lp, sample)
 
 bd_h <- rbind(tr_hm,ts_hm)
 
@@ -209,17 +202,16 @@ skim(bd_h)
 
 # Tratamiento missing data
 
-table(bd_h$Cuartos)
-table(bd_h$Dormitorio)
-table(bd_h$Tipo_vivienda)
-table(bd_h$Nper_h)
-table(bd_h$Nper_unid_gasto)
-table(bd_h$linea_pobre) 
+table(bd_h$cuartos)
+table(bd_h$dormitorio)
+table(bd_h$tipo_vivienda)
+table(bd_h$Nper)
+table(bd_h$Npersug)
 
 skim(bd_h)
 bd_h <- bd_h %>% 
-  mutate(Cuartos=ifelse(is.na(Cuartos)|Cuartos==98,3,Cuartos)) %>% # Moda=3 
-  mutate(Cuartos=ifelse(is.na(Cuartos)|Cuartos==43,3,Cuartos)) %>% # Moda=3
+  mutate(cuartos=ifelse(is.na(cuartos)|cuartos==98,3,cuartos)) %>% # Moda=3 
+  mutate(cuartos=ifelse(is.na(cuartos)|cuartos==43,3,cuartos))  # Moda=3
 
 
 
