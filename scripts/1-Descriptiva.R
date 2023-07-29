@@ -7,7 +7,8 @@ p_load(rio, # import/export data
        psych,
        modelsummary,
        stargazer,
-       foreach)
+       foreach,
+       ggplot2)
 
 # Se cargan los datos disponibles en dropbox (dl=0 a dl=1) ----
 tr_p <- read_csv("https://www.dropbox.com/scl/fi/vwfhvj05zbjh88ym0ywrf/train_personas.csv?dl=1&rlkey=zl6jxjvbzji2aqeaxsuqhrc2i")
@@ -161,7 +162,7 @@ bd_p <- bd_p %>%
   mutate(prima_vac=ifelse(is.na(prima_vac)|prima_vac==9|prima_vac==2,0,prima_vac)) %>% 
   mutate(viaticos=ifelse(is.na(viaticos)|viaticos==9|viaticos==2,0,viaticos)) %>% 
   mutate(bon_anual=ifelse(is.na(bon_anual)|bon_anual==9|bon_anual==2,0,bon_anual)) %>% 
-  mutate(a_pension=ifelse(is.na(a_pension)|a_pension==9|a_pension==2,0,a_pension)) %>% 
+  mutate(a_pension=ifelse(is.na(a_pension)|a_pension==9,0,a_pension)) %>% 
   mutate(ing_des=ifelse(is.na(ing_des)|ing_des==9|ing_des==2,0,ing_des)) %>% 
   mutate(arriendo=ifelse(is.na(arriendo)|arriendo==9|arriendo==2,0,arriendo)) %>% 
   mutate(inv_pension=ifelse(is.na(inv_pension)|inv_pension==9|inv_pension==2,0,inv_pension)) %>% 
@@ -176,7 +177,7 @@ bd_p <- bd_p %>%
   mutate(exp=edad-anos_edu-5) %>%
   mutate(exp=ifelse(exp<0,0,exp)) %>% 
   mutate(exp2=exp^2) %>% 
-  mutate(Clase=ifelse(Clase==2,0,Clase)) %>% # 1: Urbano 0 Rural
+  mutate(Clase=ifelse(Clase==2,0,Clase)) %>% # 1: Urbano 0_2 Rural
   mutate(sexo=ifelse(sexo==2,0,sexo)) # 1:Hombre 0:Mujer
   
 glimpse(bd_p)
@@ -185,6 +186,38 @@ skim(bd_p)
 ## Convertir variables categóricas en factores ----
 f_des <- c("reg_salud","nivel_edu","q_hizo","rel_lab","a_pension")
 bd_p[f_des] <- lapply(bd_p[f_des],factor)
+
+ggplot(bd_p,aes(colour=sample,x=reg_salud)) +
+  geom_bar(fill="grey") + 
+  labs(x="Régimen de salud",y="Personas")+
+  facet_wrap(~sample)
+
+ggplot(bd_p,aes(colour=sample,x=nivel_edu)) +
+  geom_bar(fill="grey") + 
+  labs(x="Nivel educativo",y="Personas")+
+  facet_wrap(~sample)
+
+ggplot(bd_p,aes(colour=sample,x=rel_lab)) +
+  geom_bar(fill="grey") + 
+  labs(x="Relación laboral",y="Personas")+
+  facet_wrap(~sample)
+
+ggplot(bd_p,aes(colour=sample,x=q_hizo)) +
+  geom_bar(fill="grey") + 
+  labs(x="¿Qué hizo la semana anterior?",y="Personas")+
+  facet_wrap(~sample)
+
+ggplot(bd_p,aes(colour=sample,x=a_pension)) +
+  geom_bar(fill="grey") + 
+  labs(x="Tipo afiliación a pensión",y="Personas")+
+  facet_wrap(~sample)
+
+des_var <- bd_p %>% 
+  dplyr::group_by(sample) %>% 
+  skim()
+write_csv(des_var,file="../views/descriptiva.csv")
+
+skim(bd_p)
 
 # Tratamiento hogares ----
 ## Renombrar variables ----
