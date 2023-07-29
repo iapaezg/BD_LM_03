@@ -547,7 +547,46 @@ submit <- d_submit %>%
   select(id,Pobre)
 prop.table(table(submit$Pobre))
 write.csv(submit,file = "../stores/i1.csv",row.names = FALSE)
-  
+
+d_submit <- db_testh
+d_submit$predict <- predict(logitM2,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i2.csv",row.names = FALSE)
+
+d_submit <- db_testh
+d_submit$predict <- predict(lasso1,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i3.csv",row.names = FALSE)
+
+d_submit <- db_testh
+d_submit$predict <- predict(lasso2,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i4.csv",row.names = FALSE)
+
+d_submit <- db_testh
+d_submit$predict <- predict(lasso_roc1,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i5.csv",row.names = FALSE)
+
+d_submit <- db_testh
+d_submit$predict <- predict(lasso_roc2,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i6.csv",row.names = FALSE)
 
 with(testR,table(Pobre,logitM1))
 with(testR,table(Pobre,lasso1))
