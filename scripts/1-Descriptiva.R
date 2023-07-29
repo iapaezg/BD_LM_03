@@ -173,10 +173,18 @@ bd_p <- bd_p %>%
   mutate(int_cesantias=ifelse(is.na(int_cesantias)|int_cesantias==9|int_cesantias==2,0,int_cesantias)) %>% 
   mutate(otras_fuentes=ifelse(is.na(otras_fuentes)|otras_fuentes==9|otras_fuentes==2,0,otras_fuentes)) %>% 
   mutate(edad2=edad^2) %>% 
-  mutate(exp=edad-anos_edu-5) %>% 
-  mutate(exp=exp^2)
+  mutate(exp=edad-anos_edu-5) %>%
+  mutate(exp=ifelse(exp<0,0,exp)) %>% 
+  mutate(exp2=exp^2) %>% 
+  mutate(Clase=ifelse(Clase==2,0,Clase)) %>% # 1: Urbano 0 Rural
+  mutate(sexo=ifelse(sexo==2,0,sexo)) # 1:Hombre 0:Mujer
   
+glimpse(bd_p)
 skim(bd_p)
+
+## Convertir variables categóricas en factores ----
+f_des <- c("reg_salud","nivel_edu","q_hizo","rel_lab","a_pension")
+bd_p[f_des] <- lapply(bd_p[f_des],factor)
 
 # Tratamiento hogares ----
 ## Renombrar variables ----
@@ -192,6 +200,7 @@ ts_hm <- ts_h %>%
 
 str(ts_hm)
 
+## Selección de variables de interes ----
 tr_hm <- tr_hm %>%
   select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
          Nper, Npersug, Li, Lp, sample)
@@ -199,12 +208,11 @@ ts_hm <- ts_hm %>%
   select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
          Nper, Npersug, Li, Lp, sample)
 
-bd_h <- rbind(tr_hm,ts_hm)
+bd_h <- rbind(tr_hm,ts_hm) # Unen bases de hogares
 
 skim(bd_h)
 
-# Tratamiento missing data
-
+## Tratamiento missing data ----
 table(bd_h$cuartos)
 table(bd_h$dormitorio)
 table(bd_h$tipo_vivienda)
