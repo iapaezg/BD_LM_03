@@ -170,7 +170,7 @@ bd_p <- bd_p %>%
   mutate(otras_fuentes=ifelse(is.na(otras_fuentes)|otras_fuentes==9|otras_fuentes==2,0,otras_fuentes)) %>% 
   mutate(edad2=edad^2)
   
-
+skim(bd_p)
 
 
 ### BASE DE DATOS HOGARES ###
@@ -204,6 +204,8 @@ ts_hm <- ts_hm %>%
   select(id, Clase, Dominio,Cuartos,Dormitorio, Tipo_vivienda,Nper_h,Nper_unid_gasto, linea_indig,linea_pobre)
 
 bd_h <- rbind(tr_hm,ts_hm)
+
+skim(bd_h)
 
 # Tratamiento missing data
 
