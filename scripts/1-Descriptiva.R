@@ -183,6 +183,7 @@ bd_p <- bd_p %>%
   
 glimpse(bd_p)
 skim(bd_p)
+datasummary_skim(bd_p)
 
 ## Convertir variables categóricas en factores ----
 f_des <- c("reg_salud","nivel_edu","q_hizo","rel_lab","a_pension")
@@ -221,6 +222,7 @@ write_csv(des_var,file="../views/descriptiva.csv")
 skim(bd_p)
 
 # Tratamiento hogares ----
+
 ## Renombrar variables ----
 tr_hm <- tr_h %>% 
 	rename(cuartos= P5000) %>% 
@@ -237,7 +239,7 @@ str(ts_hm)
 ## Selección de variables de interes ----
 tr_hm <- tr_hm %>%
   select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
-         Nper, Npersug, Li, Lp, sample)
+         Nper, Npersug, Li, Lp, Pobre, sample)
 ts_hm <- ts_hm %>%
   select(id, Clase, Dominio, cuartos, dormitorio, tipo_vivienda, 
          Nper, Npersug, Li, Lp, sample)
@@ -261,16 +263,14 @@ bd_h <- bd_h %>%
 
 ## Convertir variables categóricas en factores ----
   
-cols2 <- c("Clase","tipo_vivienda")
+cols2 <- c("Clase","tipo_vivienda", "Pobre")
 bd_h[cols2] <- lapply(bd_h[cols2],factor)
 
 
 ## Estadisticas descriptivas de los hogares ----
-skim(bd_p)
+
 skim(bd_h)
-glimpse(bd_p)
 glimpse(bd_h)
-datasummary_skim(bd_p)
 datasummary_skim(bd_h)
 
 ggplot(bd_h,aes(colour=sample,x=Dominio)) +
@@ -312,7 +312,7 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
 ## Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre ----
 table(tr_h$Pobre)
 
-
+#Clasificación
 
 
 
