@@ -312,7 +312,13 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
 ## Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre ----
 table(tr_h$Pobre)
 
-#Clasificación
+# Clasificación ------
+set.seed(2023)
+p_load(caret)
+
+# se definen tres grupos de muestras
+db_trainh <- 
+split1 <- 
 
 
 
