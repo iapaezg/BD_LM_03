@@ -310,7 +310,6 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
   facet_wrap(~sample)
 
 ## Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre ----
-
 table(tr_h$Pobre)
 
 
