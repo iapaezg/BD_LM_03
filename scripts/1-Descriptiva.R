@@ -117,14 +117,15 @@ trp_m <- trp_m %>%
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
          sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
          h_tra1, a_pension, h_tra2, ing_des, arriendo, inv_pension, pat_pension, hog_na,
-         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample)
+         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample, Ingtotes)
   
 tsp_m <- tsp_m %>%
+  mutate(Ingtotes="") %>% 
   select(id, Orden, Clase, Dominio, sexo, edad, a_salud, reg_salud, nivel_edu, anos_edu,
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
          sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
          h_tra1, a_pension, h_tra2, ing_des, arriendo, inv_pension, pat_pension, hog_na,
-         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample)
+         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample, Ingtotes)
 
 bd_p <- rbind(trp_m,tsp_m)
 table(bd_p$reg_salud)
@@ -537,7 +538,7 @@ testR <- testR %>%
   mutate(
     logitM1=ifelse(logitM1>0.5,"si","no"),
     lasso1=ifelse(lasso1>0.5,"si","no"),
-    lasso_roc1=ifelse(lasso_roc1>rf_Thresh1$threshold,"si","no")
+    lasso_roc1=ifelse(lasso_roc1>rf_Thresh1$threshold,"si","no"),
     elasticnet1=ifelse(elasticnet1>0.5,"Si","No")
   )
 
@@ -565,7 +566,7 @@ testR <- testR %>%
   mutate(
     logitM2=ifelse(logitM2>0.5,"si","no"),
     lasso2=ifelse(lasso2>0.5,"si","no"),
-    lasso_roc2=ifelse(lasso_roc2>rf_Thresh2$threshold,"si","no")
+    lasso_roc2=ifelse(lasso_roc2>rf_Thresh2$threshold,"si","no"),
     elasticnet2=ifelse(elasticnet2>0.5,"Si","No")
   )
 
@@ -585,7 +586,6 @@ elasticnet2
 
 # Evaluando en el test real
 data <- db_testh
-
 
 # Exportar resultados
 d_submit <- db_testh
@@ -636,7 +636,30 @@ submit <- d_submit %>%
 prop.table(table(submit$Pobre))
 write.csv(submit,file = "../stores/i6.csv",row.names = FALSE)
 
+d_submit <- db_testh
+d_submit$predict <- predict(elasticnet1,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i7.csv",row.names = FALSE)
 
+d_submit <- db_testh
+d_submit$predict <- predict(elasticnet2,d_submit,type = "prob")[,1]
+submit <- d_submit %>% 
+  mutate(Pobre=ifelse(predict>0.5,1,0)) %>% 
+  select(id,Pobre)
+prop.table(table(submit$Pobre))
+write.csv(submit,file = "../stores/i8.csv",row.names = FALSE)
+
+# Income regression -----------
+#Creamos una tabla para almacenar resultados de modelos
+Modelo <- c("OLS-Oversampling", "OLS-Downsampliing","Árbol")
+Accuracy <- c("0")
+Sensitivity <- c("0")
+Specificity <- c("0")
+ResultadosModPred <- data.frame(Modelo, Accuracy, Sensitivity, Specificity)
+rm(Accuracy, Modelo, Sensitivity, Specificity)
 
 
 
@@ -704,3 +727,21 @@ Nper Personas por hogar
 Npersug Personas por unidad de gasto
 Li Línea indigencia
 Lp Línea de pobreza ingresos de un hogar
+
+
+## data test
+data_submit <- test_final
+df_coeficientes <- coef(lasso_roc1$finalModel, c(lasso_roc1$finalModel$lambdaOpt, lasso_roc1$finalModel$a0)) %>%
+  as.matrix() %>%
+  as_tibble(rownames = "predictor") %>%
+  rename(coeficiente = s0)
+
+write_xlsx(df_coeficientes, file = "/Users/betinacortes/clasification_model_submit_LR1.csv") # se exporta a excel tabla con las estadísticas descriptivas
+
+df_coeficientes %>%
+  filter(predictor != "(Intercept)") %>%
+  ggplot(aes(x = predictor, y = coeficiente)) +
+  geom_col(fill = "#556B2F") + 
+  labs(title = "Coeficientes del modelo Lasso1, maximizando el ROC", y = "Coeficientes", x = "Variables predictoras") + # Añadir labels en X e Y
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 8, angle = 90))
