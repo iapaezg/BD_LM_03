@@ -311,7 +311,7 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
   labs(x="Número personas por unidad de gasto (train/test)",y="Cantidad")+
   facet_wrap(~sample)
 
-#Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre
+## Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre ----
 stargazer(tr_h$Pobre,type="text", out="stat.txt")
 histogram(tr_h$Pobre,xlab="Hogar pobre",ylab="Cantidad",col="grey")
 
