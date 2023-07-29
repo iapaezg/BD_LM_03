@@ -21,6 +21,7 @@ glimpse(tr_p)
 glimpse(ts_p)
 skim(ts_p)
 
+# Se crea la variable sample ----
 tr_p <- tr_p %>% mutate(sample = "train")
 tr_h <- tr_h  %>% mutate(sample = "train")
 ts_p <- ts_p  %>% mutate(sample = "test")
@@ -28,7 +29,8 @@ ts_h <- ts_h  %>% mutate(sample = "test")
 
 str(tr_p)
 
-#Renombrar las variables
+# Tratamiento personas ------
+## Renombrar las variables -----
 trp_m <- tr_p %>% 
   rename(sexo= P6020) %>% 
   rename(edad= P6040) %>% 
@@ -107,6 +109,7 @@ tsp_m <- ts_p %>%
 
 str(tsp_m)
 
+## Seleccionamos variables de interes ----
 trp_m <- trp_m %>%
   select(id, Orden, Clase, Dominio, sexo, edad, a_salud, reg_salud, nivel_edu, anos_edu,
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
@@ -128,7 +131,7 @@ median(bd_p$anos_edu[which(!is.na(bd_p$anos_edu))])
 table(bd_p$q_hizo)
 table(bd_p$rel_lab,bd_p$Oc)
 
-# Tratamiento missing data
+## Tratamiento missing data ----
 skim(bd_p)
 bd_p <- bd_p %>% 
   mutate(reg_salud=ifelse(is.na(reg_salud)|reg_salud==9,3,reg_salud)) %>% # Moda=3
@@ -175,8 +178,8 @@ bd_p <- bd_p %>%
   
 skim(bd_p)
 
-### BASE DE DATOS HOGARES ###
-
+# Tratamiento hogares ----
+## Renombrar variables ----
 tr_hm <- tr_h %>% 
 	rename(cuartos= P5000) %>% 
 	rename(dormitorio= P5010) %>% 
