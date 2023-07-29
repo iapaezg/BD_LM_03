@@ -301,7 +301,7 @@ ggplot(bd_h,aes(colour=sample,x=tipo_vivienda)) +
 table(bd_h$tipo_vivienda)
 
 ggplot(bd_h,aes(colour=sample,x=Nper)) +
-  geom_bar(fill="grey") + 
+  geom_bar(fill="grey", stat="density") + 
   labs(x="Número personas por hogar (train/test)",y="Cantidad")+
   facet_wrap(~sample)
 table(bd_h$Nper)
@@ -443,6 +443,7 @@ resultados$R1 <- predict(lasso_roc1,
                          newdata=evaluation,
                          type="prob")[,1]
 head(resultados)
+
 # Roc para M1
 rf_ROC1 <- roc(resultados$Pobre, resultados$R1, levels = rev(levels(resultados$Pobre)))
 rf_ROC1
@@ -487,9 +488,7 @@ with(resultados,table(Pobre,lasso2rf_Thresh))
 
 
 # Elastic Net
-
 #M1
-
 elasticnet1 <- train(
   M1,
   data = training,
