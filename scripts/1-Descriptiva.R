@@ -246,7 +246,7 @@ bd_h <- rbind(tr_hm,ts_hm) # Unen bases de hogares
 
 skim(bd_h)
 
-# Tratamiento missing data
+## Tratamiento missing data ----
 
 table(bd_h$cuartos)
 table(bd_h$dormitorio)
@@ -265,8 +265,7 @@ cols2 <- c("Clase","tipo_vivienda")
 bd_h[cols2] <- lapply(bd_h[cols2],factor)
 
 
-#ESTADISTICAS DESCRIPTIVAS
-
+## Estadisticas descriptivas de los hogares ----
 skim(bd_p)
 skim(bd_h)
 glimpse(bd_p)
@@ -275,8 +274,6 @@ stargazer(bd_p,type="text",out="stat.txt")
 stargazer(bd_h,type="text",out="stat.txt")
 datasummary_skim(bd_p)
 datasummary_skim(bd_h)
-
-##Estadisticas descriptivas de los hogares
 
 ggplot(bd_h,aes(colour=sample,x=Dominio)) +
   geom_bar(fill="grey") + 
@@ -295,7 +292,7 @@ ggplot(bd_h,aes(colour=sample,x=dormitorio)) +
   facet_wrap(~sample)
 
 ## TIPO DE VIVIENDA. 1. Propia, totalmente pagada. 2. Propia, la están pagando
-3. En arriendo o subarriendo. 4. En usufructo. 5. En posesión sin titulo. 6. Otra
+# 3. En arriendo o subarriendo. 4. En usufructo. 5. En posesión sin titulo. 6. Otra
 
 ggplot(bd_h,aes(colour=sample,x=tipo_vivienda)) +
   geom_bar(fill="grey") + 
@@ -315,8 +312,7 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
   facet_wrap(~sample)
 
 #Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre
-stargazer(tr_h$Pobre,type="text",out="stat.txt")
-
+stargazer(tr_h$Pobre,type="text", out="stat.txt")
 histogram(tr_h$Pobre,xlab="Hogar pobre",ylab="Cantidad",col="grey")
 
 
