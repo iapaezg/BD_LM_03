@@ -315,7 +315,6 @@ ggplot(bd_h,aes(colour=sample,x=Npersug)) +
 stargazer(tr_h$Pobre,type="text", out="stat.txt")
 histogram(tr_h$Pobre,xlab="Hogar pobre",ylab="Cantidad",col="grey")
 
-
 ggplot(tr_h,aes(colour=sample,x=Pobre)) +
   geom_bar(fill="grey") + 
   labs(x="Hogar pobre (train/test)",y="Cantidad")+
