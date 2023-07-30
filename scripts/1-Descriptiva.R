@@ -190,30 +190,38 @@ datasummary_skim(bd_p)
 f_des <- c("reg_salud","nivel_edu","q_hizo","rel_lab","a_pension")
 bd_p[f_des] <- lapply(bd_p[f_des],factor)
 
-ggplot(bd_p,aes(colour=sample,x=reg_salud)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Régimen de salud",y="Personas")+
+ggplot(bd_p,aes(x=reg_salud)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) + 
+  labs(x="Régimen de salud",y="Porcentaje Personas") +
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
+  
+ggplot(bd_p,aes(x=nivel_edu)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) + 
+  labs(x="Nivel educativo",y="Porcentaje Personas")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
+
+ggplot(bd_p,aes(x=rel_lab)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) + 
+  labs(x="Relación laboral",y="Porcentaje Personas")+
   facet_wrap(~sample)
 
-ggplot(bd_p,aes(colour=sample,x=nivel_edu)) +
-  geom_bar(fill="grey",stat="density") + 
-  labs(x="Nivel educativo",y="Personas")+
-  facet_wrap(~sample)
+ggplot(bd_p,aes(x=q_hizo)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="¿Qué hizo la semana anterior?",y="Porcentaje Personas")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
 
-ggplot(bd_p,aes(colour=sample,x=rel_lab)) +
-  geom_bar(fill="grey",stat="density") + 
-  labs(x="Relación laboral",y="Personas")+
-  facet_wrap(~sample)
-
-ggplot(bd_p,aes(colour=sample,x=q_hizo)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="¿Qué hizo la semana anterior?",y="Personas")+
-  facet_wrap(~sample)
-
-ggplot(bd_p,aes(colour=sample,x=a_pension)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Tipo afiliación a pensión",y="Personas")+
-  facet_wrap(~sample)
+ggplot(bd_p,aes(x=a_pension)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) + 
+  labs(x="Tipo afiliación a pensión",y="Porcentaje Personas")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
 
 des_var <- bd_p %>% 
   dplyr::group_by(sample) %>% 
