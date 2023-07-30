@@ -1,91 +1,97 @@
-skim_variable;sample; numeric.mean ; numeric.sd ; numeric.p0 ; numeric.p25 ; numeric.p50 ; numeric.p75 ; numeric.p100 
-Orden;test; 2.65 ; 1.71 ; 1.00 ; 1.00 ; 2.00 ; 3.00 ; 21.00 
-Orden;train; 2.62 ; 1.69 ; 1.00 ; 1.00 ; 2.00 ; 3.00 ; 28.00 
-Clase;test; 0.90 ; 0.30 ; - ; 1.00 ; 1.00 ; 1.00 ; 1.00 
-Clase;train; 0.90 ; 0.29 ; - ; 1.00 ; 1.00 ; 1.00 ; 1.00 
-sexo;test; 0.47 ; 0.50 ; - ; - ; - ; 1.00 ; 1.00 
-sexo;train; 0.47 ; 0.50 ; - ; - ; - ; 1.00 ; 1.00 
-edad;test; 33.50 ; 21.69 ; - ; 16.00 ; 30.00 ; 50.00 ; 110.00 
-edad;train; 33.55 ; 21.65 ; - ; 16.00 ; 31.00 ; 50.00 ; 110.00 
-a_salud;test; 0.77 ; 0.42 ; - ; 1.00 ; 1.00 ; 1.00 ; 1.00 
-a_salud;train; 0.77 ; 0.42 ; - ; 1.00 ; 1.00 ; 1.00 ; 1.00 
-reg_salud;test; 2.26 ; 0.95 ; 1.00 ; 1.00 ; 3.00 ; 3.00 ; 3.00 
-reg_salud;train; 2.23 ; 0.95 ; 1.00 ; 1.00 ; 3.00 ; 3.00 ; 3.00 
-nivel_edu;test; 4.17 ; 1.42 ; 1.00 ; 3.00 ; 4.00 ; 5.00 ; 6.00 
-nivel_edu;train; 4.19 ; 1.41 ; 1.00 ; 3.00 ; 4.00 ; 5.00 ; 6.00 
-anos_edu;test; 5.92 ; 3.34 ; - ; 4.00 ; 5.00 ; 9.00 ; 15.00 
-anos_edu;train; 5.96 ; 3.33 ; - ; 4.00 ; 5.00 ; 9.00 ; 15.00 
-q_hizo;test; 2.30 ; 1.63 ; 1.00 ; 1.00 ; 1.00 ; 4.00 ; 6.00 
-q_hizo;train; 2.30 ; 1.64 ; 1.00 ; 1.00 ; 1.00 ; 4.00 ; 6.00 
-rel_lab;test; 6.26 ; 3.21 ; 1.00 ; 4.00 ; 9.00 ; 9.00 ; 9.00 
-rel_lab;train; 6.22 ; 3.24 ; 1.00 ; 4.00 ; 9.00 ; 9.00 ; 9.00 
-h_extra;test; 0.01 ; 0.11 ; - ; - ; - ; - ; 1.00 
-h_extra;train; 0.01 ; 0.12 ; - ; - ; - ; - ; 1.00 
-prima;test; 0.00 ; 0.05 ; - ; - ; - ; - ; 1.00 
-prima;train; 0.00 ; 0.05 ; - ; - ; - ; - ; 1.00 
-bonos;test; 0.01 ; 0.08 ; - ; - ; - ; - ; 1.00 
-bonos;train; 0.01 ; 0.08 ; - ; - ; - ; - ; 1.00 
-s_alim;test; 0.00 ; 0.07 ; - ; - ; - ; - ; 1.00 
-s_alim;train; 0.01 ; 0.07 ; - ; - ; - ; - ; 1.00 
-s_trans;test; 0.10 ; 0.29 ; - ; - ; - ; - ; 1.00 
-s_trans;train; 0.10 ; 0.30 ; - ; - ; - ; - ; 1.00 
-s_fam;test; 0.04 ; 0.21 ; - ; - ; - ; - ; 1.00 
-s_fam;train; 0.05 ; 0.21 ; - ; - ; - ; - ; 1.00 
-s_edu;test; 0.00 ; 0.03 ; - ; - ; - ; - ; 1.00 
-s_edu;train; 0.00 ; 0.03 ; - ; - ; - ; - ; 1.00 
-sal_alim;test; 0.03 ; 0.17 ; - ; - ; - ; - ; 1.00 
-sal_alim;train; 0.03 ; 0.17 ; - ; - ; - ; - ; 1.00 
-sal_viv;test; 0.01 ; 0.09 ; - ; - ; - ; - ; 1.00 
-sal_viv;train; 0.01 ; 0.09 ; - ; - ; - ; - ; 1.00 
-otros_esp;test; 0.00 ; 0.04 ; - ; - ; - ; - ; 1.00 
-otros_esp;train; 0.00 ; 0.04 ; - ; - ; - ; - ; 1.00 
-prima_ss;test; 0.12 ; 0.33 ; - ; - ; - ; - ; 1.00 
-prima_ss;train; 0.13 ; 0.33 ; - ; - ; - ; - ; 1.00 
-prima_nav;test; 0.05 ; 0.21 ; - ; - ; - ; - ; 1.00 
-prima_nav;train; 0.05 ; 0.21 ; - ; - ; - ; - ; 1.00 
-prima_vac;test; 0.04 ; 0.19 ; - ; - ; - ; - ; 1.00 
-prima_vac;train; 0.04 ; 0.19 ; - ; - ; - ; - ; 1.00 
-viaticos;test; 0.01 ; 0.07 ; - ; - ; - ; - ; 1.00 
-viaticos;train; 0.01 ; 0.08 ; - ; - ; - ; - ; 1.00 
-bon_anual;test; 0.00 ; 0.02 ; - ; - ; - ; - ; 1.00 
-bon_anual;train; 0.00 ; 0.02 ; - ; - ; - ; - ; 1.00 
-h_tra1;test; 20.29 ; 24.61 ; - ; - ; - ; 48.00 ; 130.00 
-h_tra1;train; 20.47 ; 24.72 ; - ; - ; - ; 48.00 ; 130.00 
-a_pension;test; 1.18 ; 0.41 ; 1.00 ; 1.00 ; 1.00 ; 1.00 ; 3.00 
-a_pension;train; 1.19 ; 0.41 ; 1.00 ; 1.00 ; 1.00 ; 1.00 ; 3.00 
-h_tra2;test; 0.30 ; 2.37 ; - ; - ; - ; - ; 72.00 
-h_tra2;train; 0.30 ; 2.39 ; - ; - ; - ; - ; 96.00 
-ing_des;test; 0.01 ; 0.09 ; - ; - ; - ; - ; 1.00 
-ing_des;train; 0.01 ; 0.09 ; - ; - ; - ; - ; 1.00 
-arriendo;test; 0.07 ; 0.26 ; - ; - ; - ; - ; 1.00 
-arriendo;train; 0.08 ; 0.26 ; - ; - ; - ; - ; 1.00 
-inv_pension;test; 0.05 ; 0.21 ; - ; - ; - ; - ; 1.00 
-inv_pension;train; 0.05 ; 0.21 ; - ; - ; - ; - ; 1.00 
-pat_pension;test; 0.00 ; 0.06 ; - ; - ; - ; - ; 1.00 
-pat_pension;train; 0.00 ; 0.07 ; - ; - ; - ; - ; 1.00 
-hog_na;test; 0.08 ; 0.27 ; - ; - ; - ; - ; 1.00 
-hog_na;train; 0.08 ; 0.27 ; - ; - ; - ; - ; 1.00 
-hog_int;test; 0.01 ; 0.08 ; - ; - ; - ; - ; 1.00 
-hog_int;train; 0.01 ; 0.08 ; - ; - ; - ; - ; 1.00 
-ayuda_inst;test; 0.06 ; 0.23 ; - ; - ; - ; - ; 1.00 
-ayuda_inst;train; 0.05 ; 0.22 ; - ; - ; - ; - ; 1.00 
-int_inv;test; 0.00 ; 0.05 ; - ; - ; - ; - ; 1.00 
-int_inv;train; 0.00 ; 0.05 ; - ; - ; - ; - ; 1.00 
-int_cesantias;test; 0.02 ; 0.14 ; - ; - ; - ; - ; 1.00 
-int_cesantias;train; 0.03 ; 0.17 ; - ; - ; - ; - ; 1.00 
-otras_fuentes;test; 0.02 ; 0.14 ; - ; - ; - ; - ; 1.00 
-otras_fuentes;train; 0.02 ; 0.15 ; - ; - ; - ; - ; 1.00 
-Oc;test; 0.46 ; 0.50 ; - ; - ; - ; 1.00 ; 1.00 
-Oc;train; 0.46 ; 0.50 ; - ; - ; - ; 1.00 ; 1.00 
-Des;test; 0.05 ; 0.23 ; - ; - ; - ; - ; 1.00 
-Des;train; 0.06 ; 0.23 ; - ; - ; - ; - ; 1.00 
-Ina;test; 0.31 ; 0.46 ; - ; - ; - ; 1.00 ; 1.00 
-Ina;train; 0.31 ; 0.46 ; - ; - ; - ; 1.00 ; 1.00 
-h_trat;test; 20.59 ; 24.96 ; - ; - ; - ; 48.00 ; 168.00 
-h_trat;train; 20.77 ; 25.07 ; - ; - ; - ; 48.00 ; 166.00 
-edad2;test; 1,592.76 ; 1,731.84 ; - ; 256.00 ; 900.00 ; 2,500.00 ; 12,100.00 
-edad2;train; 1,594.63 ; 1,729.20 ; - ; 256.00 ; 961.00 ; 2,500.00 ; 12,100.00 
-exp;test; 23.38 ; 21.04 ; - ; 3.00 ; 19.00 ; 38.00 ; 105.00 
-exp;train; 23.38 ; 20.99 ; - ; 3.00 ; 19.00 ; 39.00 ; 105.00 
-exp2;test; 989.26 ; 1,367.41 ; - ; 9.00 ; 361.00 ; 1,444.00 ; 11,025.00 
-exp2;train; 987.52 ; 1,362.39 ; - ; 9.00 ; 361.00 ; 1,521.00 ; 11,025.00 
+skim_type,skim_variable,sample,n_missing,complete_rate,character.min,character.max,character.empty,character.n_unique,character.whitespace,factor.ordered,factor.n_unique,factor.top_counts,numeric.mean,numeric.sd,numeric.p0,numeric.p25,numeric.p50,numeric.p75,numeric.p100,numeric.hist
+character,id,test,0,1,24,24,0,66168,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+character,id,train,0,1,24,24,0,164960,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+character,Dominio,test,0,1,4,13,0,24,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+character,Dominio,train,0,1,4,13,0,25,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+character,Ingtotes,test,0,1,0,0,219644,1,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+character,Ingtotes,train,500007,0.07936160144648685,2,8,0,6128,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+factor,reg_salud,test,0,1,NA,NA,NA,NA,NA,FALSE,3,"3: 133969, 1: 77355, 2: 8320",NA,NA,NA,NA,NA,NA,NA,NA
+factor,reg_salud,train,0,1,NA,NA,NA,NA,NA,FALSE,3,"3: 324124, 1: 199157, 2: 19828",NA,NA,NA,NA,NA,NA,NA,NA
+factor,nivel_edu,test,0,1,NA,NA,NA,NA,NA,FALSE,6,"3: 64321, 6: 50723, 5: 48094, 4: 38322",NA,NA,NA,NA,NA,NA,NA,NA
+factor,nivel_edu,train,0,1,NA,NA,NA,NA,NA,FALSE,6,"3: 157732, 6: 127741, 5: 120145, 4: 94370",NA,NA,NA,NA,NA,NA,NA,NA
+factor,q_hizo,test,0,1,NA,NA,NA,NA,NA,FALSE,6,"1: 122633, 4: 43178, 3: 29592, 6: 15809",NA,NA,NA,NA,NA,NA,NA,NA
+factor,q_hizo,train,0,1,NA,NA,NA,NA,NA,FALSE,6,"1: 303862, 4: 105258, 3: 72676, 6: 40589",NA,NA,NA,NA,NA,NA,NA,NA
+factor,rel_lab,test,0,1,NA,NA,NA,NA,NA,FALSE,9,"9: 119772, 4: 47406, 1: 35396, 2: 5145",NA,NA,NA,NA,NA,NA,NA,NA
+factor,rel_lab,train,0,1,NA,NA,NA,NA,NA,FALSE,9,"9: 295161, 4: 114384, 1: 92083, 2: 12763",NA,NA,NA,NA,NA,NA,NA,NA
+factor,a_pension,test,0,1,NA,NA,NA,NA,NA,FALSE,4,"0: 120159, 2: 60745, 1: 36928, 3: 1812",NA,NA,NA,NA,NA,NA,NA,NA
+factor,a_pension,train,0,1,NA,NA,NA,NA,NA,FALSE,4,"0: 296058, 2: 147466, 1: 95045, 3: 4540",NA,NA,NA,NA,NA,NA,NA,NA
+numeric,Orden,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,2.6451348545828703,1.707653136207705,1,1,2,3,21,▇▁▁▁▁
+numeric,Orden,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,2.6245468220928028,1.694852111971136,1,1,2,3,28,▇▁▁▁▁
+numeric,Clase,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.8986405273988818,0.3018048121122816,0,1,1,1,1,▁▁▁▁▇
+numeric,Clase,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.9049288448543479,0.2933134654476059,0,1,1,1,1,▁▁▁▁▇
+numeric,sexo,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.4728378649086704,0.4992628098195565,0,0,0,1,1,▇▁▁▁▇
+numeric,sexo,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.4713823560279797,0.49918081820034016,0,0,0,1,1,▇▁▁▁▇
+numeric,edad,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,33.50389266267232,21.685333988909164,0,16,30,50,110,▇▇▅▂▁
+numeric,edad,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,33.55271041356339,21.6528441367585,0,16,31,50,110,▇▇▅▂▁
+numeric,a_salud,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.7686893336489956,0.4216714971469797,0,1,1,1,1,▂▁▁▁▇
+numeric,a_salud,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.7685123980637404,0.42178361709202156,0,1,1,1,1,▂▁▁▁▇
+numeric,anos_edu,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,5.921650488973065,3.3381832982827073,0,4,5,9,15,▅▇▂▅▁
+numeric,anos_edu,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,5.963865448740492,3.3286963684457667,0,4,5,9,15,▅▇▂▅▁
+numeric,h_extra,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.012442862085920854,0.11085167213231713,0,0,0,0,1,▇▁▁▁▁
+numeric,h_extra,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.013726526351063967,0.11635348620690385,0,0,0,0,1,▇▁▁▁▁
+numeric,prima,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0026816120631567445,0.05171492237369539,0,0,0,0,1,▇▁▁▁▁
+numeric,prima,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.002478323872371844,0.04972108541726611,0,0,0,0,1,▇▁▁▁▁
+numeric,bonos,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.006706306568811349,0.08161716944989235,0,0,0,0,1,▇▁▁▁▁
+numeric,bonos,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.006913897578570785,0.08286198308677284,0,0,0,0,1,▇▁▁▁▁
+numeric,s_alim,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.004775910109085611,0.06894289254038566,0,0,0,0,1,▇▁▁▁▁
+numeric,s_alim,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0051775978670948195,0.07176907294466699,0,0,0,0,1,▇▁▁▁▁
+numeric,s_trans,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.09522682158401777,0.2935286464757778,0,0,0,0,1,▇▁▁▁▁
+numeric,s_trans,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.10033529181066785,0.30044681265493917,0,0,0,0,1,▇▁▁▁▁
+numeric,s_fam,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.044148713372548304,0.2054258907933769,0,0,0,0,1,▇▁▁▁▁
+numeric,s_fam,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.046138068048955184,0.2097842409669249,0,0,0,0,1,▇▁▁▁▁
+numeric,s_edu,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,7.102402068802242e-4,0.026640927105563747,0,0,0,0,1,▇▁▁▁▁
+numeric,s_edu,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,6.720566221513546e-4,0.02591536607195763,0,0,0,0,1,▇▁▁▁▁
+numeric,sal_alim,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.029233669028063593,0.16846124429262946,0,0,0,0,1,▇▁▁▁▁
+numeric,sal_alim,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.030240706745791362,0.1712491179490078,0,0,0,0,1,▇▁▁▁▁
+numeric,sal_viv,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.007858170494072227,0.08829753760116738,0,0,0,0,1,▇▁▁▁▁
+numeric,sal_viv,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.007330020308998747,0.08530125736922914,0,0,0,0,1,▇▁▁▁▁
+numeric,otros_esp,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0016253573965143596,0.04028303610475082,0,0,0,0,1,▇▁▁▁▁
+numeric,otros_esp,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0016976334400645172,0.04116739730947688,0,0,0,0,1,▇▁▁▁▁
+numeric,prima_ss,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.121519367704103,0.3267306184057732,0,0,0,0,1,▇▁▁▁▁
+numeric,prima_ss,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.1286997637674942,0.33486764705602345,0,0,0,0,1,▇▁▁▁▁
+numeric,prima_nav,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.04806414015406749,0.2139022835221238,0,0,0,0,1,▇▁▁▁▁
+numeric,prima_nav,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.04649158824471698,0.21054738680456292,0,0,0,0,1,▇▁▁▁▁
+numeric,prima_vac,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.03805248493015971,0.19132344334998538,0,0,0,0,1,▇▁▁▁▁
+numeric,prima_vac,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.03736450694059571,0.18965354409727744,0,0,0,0,1,▇▁▁▁▁
+numeric,viaticos,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.005317695907923731,0.07272855079019581,0,0,0,0,1,▇▁▁▁▁
+numeric,viaticos,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.005717084415835495,0.0753950252207871,0,0,0,0,1,▇▁▁▁▁
+numeric,bon_anual,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,3.9154267815191856e-4,0.019783608225429947,0,0,0,0,1,▇▁▁▁▁
+numeric,bon_anual,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,3.8113896105569964e-4,0.019519077735753353,0,0,0,0,1,▇▁▁▁▁
+numeric,h_tra1,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,20.2893773560853,24.606734073807957,0,0,0,48,130,▇▃▁▁▁
+numeric,h_tra1,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,20.465216006363363,24.715894989920102,0,0,0,48,130,▇▃▁▁▁
+numeric,h_tra2,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.30188851049880716,2.372917795784192,0,0,0,0,72,▇▁▁▁▁
+numeric,h_tra2,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.2998403635366013,2.390269235303976,0,0,0,0,96,▇▁▁▁▁
+numeric,ing_des,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.008345322430842636,0.09097096076346062,0,0,0,0,1,▇▁▁▁▁
+numeric,ing_des,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.008524992220714438,0.09193656667081188,0,0,0,0,1,▇▁▁▁▁
+numeric,arriendo,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.07207116971098687,0.25860630442343807,0,0,0,0,1,▇▁▁▁▁
+numeric,arriendo,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.07559624311141962,0.26435124325107523,0,0,0,0,1,▇▁▁▁▁
+numeric,inv_pension,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.04598805339549453,0.20945966697181376,0,0,0,0,1,▇▁▁▁▁
+numeric,inv_pension,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.04757056134219834,0.2128560228384681,0,0,0,0,1,▇▁▁▁▁
+numeric,pat_pension,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0038289231665786455,0.061759856538853984,0,0,0,0,1,▇▁▁▁▁
+numeric,pat_pension,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0044355737061989396,0.06645229509121597,0,0,0,0,1,▇▁▁▁▁
+numeric,hog_na,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.08072608402687986,0.2724146127655503,0,0,0,0,1,▇▁▁▁▁
+numeric,hog_na,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0792640151424484,0.2701506346891664,0,0,0,0,1,▇▁▁▁▁
+numeric,hog_int,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0065651690918031,0.08075950309744565,0,0,0,0,1,▇▁▁▁▁
+numeric,hog_int,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.006527234864456307,0.08052727494044627,0,0,0,0,1,▇▁▁▁▁
+numeric,ayuda_inst,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.05515743657919178,0.2282878249951615,0,0,0,0,1,▇▁▁▁▁
+numeric,ayuda_inst,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.053289487009053435,0.22461035255332762,0,0,0,0,1,▇▁▁▁▁
+numeric,int_inv,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.002422101218335124,0.04915532163214076,0,0,0,0,1,▇▁▁▁▁
+numeric,int_inv,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.0029257478701328835,0.05401104739604957,0,0,0,0,1,▇▁▁▁▁
+numeric,int_cesantias,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.02082005426963632,0.14278190510962244,0,0,0,0,1,▇▁▁▁▁
+numeric,int_cesantias,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.028622247099569325,0.16674251186473965,0,0,0,0,1,▇▁▁▁▁
+numeric,otras_fuentes,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.02062883575239934,0.1421385903626613,0,0,0,0,1,▇▁▁▁▁
+numeric,otras_fuentes,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.023262365381534828,0.15073576076681883,0,0,0,0,1,▇▁▁▁▁
+numeric,Oc,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.4550090145872412,0.49797283081149896,0,0,0,1,1,▇▁▁▁▇
+numeric,Oc,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.45676834668547195,0.4981279765522471,0,0,0,1,1,▇▁▁▁▇
+numeric,Des,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.05451093587805722,0.22702362960484235,0,0,0,0,1,▇▁▁▁▁
+numeric,Des,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.05537010066119324,0.22870144057132252,0,0,0,0,1,▇▁▁▁▁
+numeric,Ina,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.3137531642111781,0.4640184225230921,0,0,0,1,1,▇▁▁▁▃
+numeric,Ina,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,0.3121141428332066,0.4633565581622914,0,0,0,1,1,▇▁▁▁▃
+numeric,h_trat,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,20.59126586658411,24.961077725008785,0,0,0,48,168,▇▅▁▁▁
+numeric,h_trat,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,20.765056369899966,25.066548749450135,0,0,0,48,166,▇▅▁▁▁
+numeric,edad2,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,1592.7623927810457,1731.8355006734303,0,256,900,2500,12100,▇▂▁▁▁
+numeric,edad2,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,1594.629172044654,1729.1962301862113,0,256,961,2500,12100,▇▂▁▁▁
+numeric,exp,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,23.38037915900275,21.038492294367664,0,3,19,38,105,▇▃▂▁▁
+numeric,exp,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,23.383024402099764,20.994092939372916,0,3,19,39,105,▇▃▂▁▁
+numeric,exp2,test,0,1,NA,NA,NA,NA,NA,NA,NA,NA,989.2582724772814,1367.4124780247023,0,9,361,1444,11025,▇▁▁▁▁
+numeric,exp2,train,0,1,NA,NA,NA,NA,NA,NA,NA,NA,987.5169570012649,1362.391961006689,0,9,361,1521,11025,▇▁▁▁▁
