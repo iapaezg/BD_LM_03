@@ -9,7 +9,10 @@ p_load(rio, # import/export data
        stargazer,
        foreach,
        ggplot2)
-
+p_load("GGally","psych","rpart.plot","ROCR","gamlr","modelsummary","gtsummary","naniar","PerformanceAnalytics","pastecs",
+       "writexl","dplyr","httr","tidyverse","rvest","rio","skimr","caret","ggplot2","stargazer",
+       "readr","AER","MLmetrics","smotefamily","pROC","smotefamily","rpart","randomForest","rpart", "Metrics",
+       "rattle")
 
 # Se cargan los datos disponibles en dropbox (dl=0 a dl=1) ----
 tr_p <- read_csv("https://www.dropbox.com/scl/fi/vwfhvj05zbjh88ym0ywrf/train_personas.csv?dl=1&rlkey=zl6jxjvbzji2aqeaxsuqhrc2i")
@@ -117,15 +120,15 @@ trp_m <- trp_m %>%
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
          sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
          h_tra1, a_pension, h_tra2, ing_des, arriendo, inv_pension, pat_pension, hog_na,
-         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample, Ingtotes)
+         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample, Ingtot)
   
 tsp_m <- tsp_m %>%
-  mutate(Ingtotes="") %>% 
+  mutate(Ingtot="") %>% 
   select(id, Orden, Clase, Dominio, sexo, edad, a_salud, reg_salud, nivel_edu, anos_edu,
          q_hizo, rel_lab, h_extra, prima, bonos, s_alim, s_trans, s_fam, s_edu,
          sal_alim, sal_viv, otros_esp, prima_ss, prima_nav, prima_vac, viaticos, bon_anual,
          h_tra1, a_pension, h_tra2, ing_des, arriendo, inv_pension, pat_pension, hog_na,
-         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample, Ingtotes)
+         hog_int, ayuda_inst, int_inv, int_cesantias, otras_fuentes, Oc, Des, Ina, sample, Ingtot)
 
 bd_p <- rbind(trp_m,tsp_m)
 table(bd_p$reg_salud)
@@ -180,10 +183,11 @@ bd_p <- bd_p %>%
   mutate(exp=ifelse(exp<0,0,exp)) %>% 
   mutate(exp2=exp^2) %>% 
   mutate(Clase=ifelse(Clase==2,0,Clase)) %>% # 1: Urbano 0_2 Rural
-  mutate(sexo=ifelse(sexo==2,0,sexo)) # 1:Hombre 0:Mujer
-  
+  mutate(sexo=ifelse(sexo==2,0,sexo)) %>%  # 1:Hombre 0:Mujer
+  mutate(Ingtot=ifelse(is.na(Ingtot),0,Ingtot)) # Ingreso=0 si NA
+
 glimpse(bd_p)
-skim(bd_p)
+skim(bd_p$Ingtot)
 datasummary_skim(bd_p)
 
 ## Convertir variables categóricas en factores ----
@@ -207,7 +211,9 @@ ggplot(bd_p,aes(x=nivel_edu)) +
 ggplot(bd_p,aes(x=rel_lab)) +
   geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) + 
   labs(x="Relación laboral",y="Porcentaje Personas")+
-  facet_wrap(~sample)
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
 
 ggplot(bd_p,aes(x=q_hizo)) +
   geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
@@ -284,41 +290,63 @@ skim(bd_h)
 glimpse(bd_h)
 datasummary_skim(bd_h)
 
-ggplot(bd_h,aes(colour=sample,x=Dominio)) +
-  geom_bar(fill="grey",stat="density") + 
-  labs(x="Ciudades (train/test)",y="Cantidad")+
+ggplot(bd_h,aes(x=Dominio)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="Ciudades (train/test)",y="Porcentaje hogares")+
   facet_wrap(~sample)+ 
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw() +
   scale_x_discrete(guide = guide_axis(angle = 90))
 
-ggplot(bd_h,aes(colour=sample,x=cuartos)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Número de cuartos (train/test)",y="Cantidad")+
-  facet_wrap(~sample)
+geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="¿Qué hizo la semana anterior?",y="Porcentaje Personas")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
 
-ggplot(bd_h,aes(colour=sample,x=dormitorio)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Número de dormitorios (train/test)",y="Cantidad")+
-  facet_wrap(~sample)
+
+ggplot(bd_h,aes(x=cuartos)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="Número de cuartos (train/test)",y="Porcentaje de hogares")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
+
+ggplot(bd_h,aes(x=dormitorio)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="Número de dormitorios (train/test)",y="Porcentaje de hogares")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
 
 ## TIPO DE VIVIENDA. 1. Propia, totalmente pagada. 2. Propia, la están pagando
 # 3. En arriendo o subarriendo. 4. En usufructo. 5. En posesión sin titulo. 6. Otra
 
-ggplot(bd_h,aes(colour=sample,x=tipo_vivienda)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Tipo de vivienda (train/test)",y="Cantidad")+
-  facet_wrap(~sample)
+ggplot(bd_h,aes(x=tipo_vivienda)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="Tipo de vivienda (train/test)",y="Porcentaje de hogares")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
+
 table(bd_h$tipo_vivienda)
 
-ggplot(bd_h,aes(colour=sample,x=Nper)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Número personas por hogar (train/test)",y="Cantidad")+
-  facet_wrap(~sample)
+ggplot(bd_h,aes(x=Nper)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="Número personas por hogar (train/test)",y="Porcentaje de hogares")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
+
 table(bd_h$Nper)
 
-ggplot(bd_h,aes(colour=sample,x=Npersug)) +
-  geom_bar(fill="grey", stat="density") + 
-  labs(x="Número personas por unidad de gasto (train/test)",y="Cantidad")+
-  facet_wrap(~sample)
+ggplot(bd_h,aes(x=Npersug)) +
+  geom_bar(aes(y=(..count..)/sum(..count..),fill=factor(sample))) +  
+  labs(x="Número personas por unidad de gasto (train/test)",y="Porcentaje de hogares")+
+  guides(fill="none") +
+  facet_wrap(~sample) +
+  theme_bw()
 
 ## Hogar pobre en la muestra de train. 1 = Pobre 0 = No pobre ----
 table(tr_h$Pobre)
@@ -376,6 +404,7 @@ logitM1 <- train(
 )
 
 logitM1
+stargazer(logitM1,type="text")
 
 # Modelo 2 - Logit
 logitM2 <- train(
@@ -592,6 +621,14 @@ lasso_roc2
 elasticnet1
 elasticnet2
 
+# Datos Test -----
+coeficientes <- coef(logitM1$finalModel,c(logitM1$finalModel$lambdaOpt,
+                                          logitM1$finalModel$a0)) %>%
+  as.matrix() %>% 
+  as.tibble(rownames="predictor") %>% 
+  rename(coeficiente=s0)
+  
+
 # Evaluando en el test real
 data <- db_testh
 
@@ -662,15 +699,261 @@ write.csv(submit,file = "../stores/i8.csv",row.names = FALSE)
 
 # Income regression -----------
 #Creamos una tabla para almacenar resultados de modelos
-Modelo <- c("OLS-Oversampling", "OLS-Downsampliing","Árbol")
+Modelo <- c("OLS-Over", "OLS-Down","Árbol")
 Accuracy <- c("0")
 Sensitivity <- c("0")
 Specificity <- c("0")
 ResultadosModPred <- data.frame(Modelo, Accuracy, Sensitivity, Specificity)
 rm(Accuracy, Modelo, Sensitivity, Specificity)
 
+skim(tr_h)
+head(tr_h)
+
+# Tomamos el ingreso Ingtot de cada individuo por unidad de gasto, para 
+# predecir el ingreso por persona y luego realizar la sumatoria y dividir por
+# personas por unidad gasto (percapita)
+set.seed(2023)
+filtro <- bd_h %>% 
+  select(id, Lp, Npersug, Pobre)
+head(filtro)
+head(bd_p)
+final_p <- full_join(bd_p,filtro,by=c("id")) # Une a personas Nperug + Lp
+str(final_p)
+income_train <- final_p %>%
+  subset(sample=="train") %>% 
+  mutate(Ingtot=as.numeric(Ingtot)) %>% 
+  mutate(Pobre=factor(Pobre, levels = c(1,0),
+                      labels = c("Pobre","No pobre")))
+income_test <- final_p %>% 
+  subset(sample=="test") %>% 
+  mutate(Pobre=factor(Pobre, levels = c(1,0),
+                      labels = c("Pobre","No pobre")))
+skim(income_train)
+str(income_train)
+# Se divide la muestra de entrenamiento en 2
+submuestra <- createDataPartition(income_train$Pobre,p=0.7)[[1]]
+length(submuestra)
+train_ing <- income_train[submuestra,]
+test_ing <- income_train[-submuestra,]
+
+## Modelo OLS Up -----
+r_training <- upSample(x=select(train_ing,-Pobre),
+                       y=train_ing$Pobre, list=F,
+                       yname="PobreR")
+prop.table(table(train_ing$Pobre))
+prop.table(table(r_training$Pobre))
+nrow(train_ing)
+nrow(r_training)
+
+prop.table(table(income_train$Pobre))
+prop.table(table(r_training$Pobre))
+prop.table(table(test_ing$Pobre))
+
+# Se evaluaron las variables y se elimina edad y se deja edad2
+modelo1 <- as.formula("Ingtot ~ Oc + Dominio + Clase + sexo + edad2 + reg_salud + anos_edu + rel_lab + h_trat + exp + exp2 + q_hizo + a_pension")
+
+reg <- lm(income_model,data=income_train)
+stargazer(reg,type="text")
+
+# Cross Validation
+control <- trainControl(method = "cv",
+                        number = 5,
+                        verbose=FALSE,
+                        savePredictions = T)
+                        
+# SSE y SST
+evaluacionR <- function(true, predicted, df) {
+  SSE <- sum((predicted - true)^2)
+  SST <- sum((true - mean(true))^2)
+  R_square <- 1 - SSE / SST
+  RMSE = sqrt(SSE/nrow(df))
+    # Medtricas del cumplimiento del model
+  data.frame(
+    RMSE = RMSE,
+    Rsquare = R_square
+  )}
+
+# Entranamiento model
+r_training <- data.frame(r_training)
+mod_lineal <- train(
+  modelo1,
+  data = r_training,
+  method = "lm",
+  trControl = control,
+  preProcess = c("center", "scale")
+)
+
+mod_lineal
+pred_lineal <- predict(mod_lineal , test_ing)
+evaluacionR(test_ing$Ingtot,pred_lineal,test_ing)
+
+# Clasificacion del modelo lineal -> vemos predicción como dicótoma Pobre
+testingOLSUS <- test_ing
+testingOLSUS$PredictInc <- pred_lineal
+ing_hogar <- testingOLSUS %>% 
+  group_by(id) %>% 
+  summarise(ing_per=sum(PredictInc)/Npersug)
+testingOLSUS <- full_join(testingOLSUS,ing_hogar,by=c("id"))
+testingOLSUS <- testingOLSUS %>% mutate(linealLP1=ifelse(ing_per < Lp, 1, 0))
+testingOLSUS <- testingOLSUS %>% mutate(linealLP1=factor(linealLP1,levels=c(1,0),labels=c("Pobre","No pobre")))
+
+#Vemos parámetros
+acc_OLSUP <- Accuracy(testingOLSUS$Pobre, testingOLSUS$linealLP1)
+sens_OLSUP <- Sensitivity(testingOLSUS$Pobre, testingOLSUS$linealLP1)
+spec_OLSUP <- Specificity(testingOLSUS$Pobre, testingOLSUS$linealLP1)
+acc_OLSUP
+sens_OLSUP
+spec_OLSUP
+ResultadosModPred$Accuracy[1] <- acc_OLSUP
+ResultadosModPred$Sensitivity[1] <- sens_OLSUP
+ResultadosModPred$Specificity [1]<- spec_OLSUP
+
+#Submit Kaggle
+pred_test1 <- predict(mod_lineal , income_test) # Hacemos predicción con la data de testing
+final_income <- income_test
+final_income$PredictInc <- pred_test1
+ing_thogar <- final_income %>% 
+  group_by(id) %>% 
+  summarise(ing_per=sum(PredictInc)/Npersug) %>% 
+  summarise(ing_per=mean(ing_per))
+incom_final <- full_join(final_income,ing_thogar,by=c("id"))
+incom_final <- incom_final %>% mutate(linealLP1=ifelse(ing_per < Lp, 1, 0))
+submit <- incom_final %>% 
+  group_by(id) %>% 
+  summarise(Pobre=mean(linealLP1))
+write.csv(submit, file = "../stores/reg1.csv", row.names = FALSE)
+
+## Modelo OLS Down -----
+r_training <- downSample(x=select(train_ing,-Pobre),
+                       y=train_ing$Pobre, list=F,
+                       yname="PobreR")
+prop.table(table(train_ing$Pobre))
+prop.table(table(r_training$Pobre))
+nrow(train_ing)
+nrow(r_training)
+
+prop.table(table(income_train$Pobre))
+prop.table(table(r_training$Pobre))
+prop.table(table(test_ing$Pobre))
+
+# Se evaluaron las variables y se elimina edad y se deja edad2
+modelo1 <- as.formula("Ingtot ~ Oc + Dominio + Clase + sexo + edad2 + reg_salud + anos_edu + rel_lab + h_trat + exp + exp2 + q_hizo + a_pension")
+
+reg <- lm(income_model,data=income_train)
+stargazer(reg,type="text")
+
+# Cross Validation
+control <- trainControl(method = "cv",
+                        number = 5,
+                        verbose=FALSE,
+                        savePredictions = T)
+
+# Entranamiento model
+r_training <- data.frame(r_training)
+mod_lineal <- train(
+  modelo1,
+  data = r_training,
+  method = "lm",
+  trControl = control,
+  preProcess = c("center", "scale")
+)
+
+mod_lineal
+pred_lineal <- predict(mod_lineal , test_ing)
+evaluacionR(test_ing$Ingtot,pred_lineal,test_ing)
+
+# Clasificacion del modelo lineal -> vemos predicción como dicótoma Pobre
+testingOLSUS <- test_ing
+testingOLSUS$PredictInc <- pred_lineal
+ing_hogar <- testingOLSUS %>% 
+  group_by(id) %>% 
+  summarise(ing_per=sum(PredictInc)/Npersug)
+testingOLSUS <- full_join(testingOLSUS,ing_hogar,by=c("id"))
+testingOLSUS <- testingOLSUS %>% mutate(linealLP1=ifelse(ing_per < Lp, 1, 0))
+testingOLSUS <- testingOLSUS %>% mutate(linealLP1=factor(linealLP1,levels=c(1,0),labels=c("Pobre","No pobre")))
+
+#Vemos parámetros
+acc_OLSUP <- Accuracy(testingOLSUS$Pobre, testingOLSUS$linealLP1)
+sens_OLSUP <- Sensitivity(testingOLSUS$Pobre, testingOLSUS$linealLP1)
+spec_OLSUP <- Specificity(testingOLSUS$Pobre, testingOLSUS$linealLP1)
+acc_OLSUP
+sens_OLSUP
+spec_OLSUP
+ResultadosModPred$Accuracy[2] <- acc_OLSUP
+ResultadosModPred$Sensitivity[2] <- sens_OLSUP
+ResultadosModPred$Specificity [2]<- spec_OLSUP
+
+#Submit Kaggle
+pred_test1 <- predict(mod_lineal , income_test) # Hacemos predicción con la data de testing
+final_income <- income_test
+final_income$PredictInc <- pred_test1
+ing_thogar <- final_income %>% 
+  group_by(id) %>% 
+  summarise(ing_per=sum(PredictInc)/Npersug) %>% 
+  summarise(ing_per=mean(ing_per))
+incom_final <- full_join(final_income,ing_thogar,by=c("id"))
+incom_final <- incom_final %>% mutate(linealLP1=ifelse(ing_per < Lp, 1, 0))
+submit <- incom_final %>% 
+  group_by(id) %>% 
+  summarise(Pobre=mean(linealLP1))
+write.csv(submit, file = "../stores/reg2.csv", row.names = FALSE)
+
+# Arbol de decision -----
+train_ind <- createDataPartition(income_train$Ingtot,p=0.8)$Resample1
+train_df <- income_train[train_ind,]
+test <- income_train[-train_ind,]
+
+# Se crean particiones para CV
+CV <- trainControl(number=5, method="cv")
+arbol <- train(
+  modelo1,
+  data=train_df,
+  method="rpart",
+  trControl=CV
+)
+
+fancyRpartPlot(arbol$finalModel)
+
+y_hatin <- predict(arbol,newdata=train_df)
+test$income_pred <- predict(arbol,newdata=test)
+test <- test %>%
+  mutate(Pobre_arbol=ifelse(income_pred<Lp,1,0)) %>% 
+  mutate(Pobre_arbol=factor(Pobre_arbol,
+                            levels=c(1,0),
+                            labels=c("Pobre","No pobre")))
+
+acc_arbol <- Accuracy(test$Pobre, test$Pobre_arbol)
+sens_arbol <- Sensitivity(test$Pobre, test$Pobre_arbol)
+spec_arbol <- Specificity(test$Pobre, test$Pobre_arbol)
+acc_arbol
+sens_arbol
+spec_arbol
+
+ResultadosModPred$Accuracy[3] <- acc_arbol
+ResultadosModPred$Sensitivity[3] <- sens_arbol
+ResultadosModPred$Specificity [3]<- spec_arbol
+
+#Submit Kaggle
+pred_test_arbol <- predict(arbol , income_test) # Hacemos predicción con la data de testing
+final_income <- income_test
+final_income$PredictInc <- pred_test_arbol
+ing_thogar <- final_income %>% 
+  group_by(id) %>% 
+  summarise(ing_per=sum(PredictInc)/Npersug) %>% 
+  summarise(ing_per=mean(ing_per))
+incom_final <- full_join(final_income,ing_thogar,by=c("id"))
+incom_final <- incom_final %>% mutate(linealLP1=ifelse(ing_per < Lp, 1, 0))
+submit <- incom_final %>% 
+  group_by(id) %>% 
+  summarise(Pobre=mean(linealLP1))
+write.csv(submit, file = "../stores/reg3.csv", row.names = FALSE)
 
 
+
+
+p_load(caret)
+p_load(readxl)
+str(final_p)
 P6020 SEXO
 P6040 EDAD EDAD2
 P6090 AFILIACIÓN SALUD (AFILIADO SI O NO) MISSIN DATA O 9=0
